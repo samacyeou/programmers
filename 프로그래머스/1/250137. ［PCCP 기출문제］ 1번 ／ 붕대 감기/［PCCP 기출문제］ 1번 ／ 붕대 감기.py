@@ -1,36 +1,48 @@
 def solution(bandage, health, attacks):
-    answer = 0
 
-    max_hp = health
-    attack_time = []
-    each_damage = []
 
-    for i in attacks:
-        attack_time.append(i[0])
-        each_damage.append(i[1])
+    n=len(attacks)
+    a=attacks[n-1][0]
 
-    constant_rehap = 0
-    for i in range (1, attack_time[-1]+1):
+    s=0
+    u=0
+    real_health=health
+    for t in range(a+1):
 
-        if i in attack_time:
-            health -= each_damage[0]
-            if health <= 0:
-                return -1
-            each_damage.pop(0)
-            constant_rehap = 0
+        if t==0:
+
+            if t==attacks[u][0]:            
+                s=0
+                real_health=real_health-attacks[u][1]
+                u+=1
+
+            continue    
+
+        if t==attacks[u][0]:            
+                s=0
+                real_health=real_health-attacks[u][1]
+                u+=1        
+
 
         else:
-            # if health < max_hp:
-            health += bandage[1]
-            constant_rehap += 1
+            if real_health<= health:
+                real_health=real_health+bandage[1]
+                s+=1
 
-            if constant_rehap == bandage[0]:
-                health += bandage[2]
-                constant_rehap = 0
+                if real_health>health:
+                    real_health=health
 
-            if health > max_hp:
-                health = max_hp
+                if s==bandage[0]:
+                    real_health=real_health+bandage[2]
+                    s=0
+                    if real_health>health:
+                        real_health=health
 
-    answer = health
 
+        if real_health<=0:
+            real_health=-1
+            break
+
+
+    answer =real_health
     return answer
