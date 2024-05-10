@@ -19,23 +19,7 @@ class Solution {
 
 //         return maxVal;
 
-        for(int i = 0; i < n; i++) {
-            if(stud[i] != 2) continue;
-
-            int dir = 0;
-            if(i-1 >= 0 && stud[i-1] == 0) dir--;
-            if(i+1 < n && stud[i+1] == 0) dir++;
-
-            if(dir == -1) {
-                stud[i+dir]++;
-                stud[i]--;
-            } else if (dir == 1) {
-                stud[i+dir]++;
-                stud[i]--;
-            }
-            // for(int a: stud) System.out.print(a+" ");
-            // System.out.println();
-        }
+        
 
         for(int i = 0; i < n; i++) {
             if(stud[i] != 2) continue;
