@@ -7,14 +7,12 @@ int solution(int n) {
     int answer = 0;
 
     for(int i = 1; i <= n; i++) {
-        float temp = n / (float)i;
-        if(temp == (int)(temp / 1)) answer++;
-        // for(int j = 1; j <= n; j++) {
-        //     if(i * j == n) {
-        //         answer++;
-        //         break;
-        //     }
-        // }
+        for(int j = 1; j <= n; j++) {
+            if(i * j == n) {
+                answer++;
+                break;
+            } else if(i * j > n) break;
+        }
     }
     
     return answer;
