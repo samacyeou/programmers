@@ -1,10 +1,10 @@
 # [level 1] 신규 아이디 추천 - 72410 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/72410#qna) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/72410?language=javascript) 
 
 ### 성능 요약
 
-메모리: 10.1 MB, 시간: 0.12 ms
+메모리: 33.4 MB, 시간: 0.34 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 06월 03일 21:43:33
+2024년 06월 11일 19:21:14
 
 ### 문제 설명
 
