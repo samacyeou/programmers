@@ -39,27 +39,27 @@ public class Solution {
         }
 
         // find answer
-        int[] answer = new int[targets.Length];
-        for (int j = 0; j < targets.Length; ++j)
-        {
-            string target = targets[j];
-            for (int i = 0; i < target.Length; ++i)
-            {
-                char key = target[i];
-                if(dict.ContainsKey(key))
-                {
-                    int num = dict[key];
-                    answer[j] = answer[j] + num + 1;
-                }
-                else
-                {
-                    answer[j] = -1;
-                    break;
-                }
-            }
-        }
+        // int[] answer = new int[targets.Length];
+        // for (int j = 0; j < targets.Length; ++j)
+        // {
+        //     string target = targets[j];
+        //     for (int i = 0; i < target.Length; ++i)
+        //     {
+        //         char key = target[i];
+        //         if(dict.ContainsKey(key))
+        //         {
+        //             int num = dict[key];
+        //             answer[j] = answer[j] + num + 1;
+        //         }
+        //         else
+        //         {
+        //             answer[j] = -1;
+        //             break;
+        //         }
+        //     }
+        // }
 
-        /*
+        
         // dictionary에서 검색 후 출력
         int[] answer = new int[targets.Length];
         for(int i = 0; i < targets.Length; i++)
@@ -75,7 +75,7 @@ public class Solution {
 
                 answer[i] += index + 1;
             }
-        }*/
+        }
 
         return answer;
     }
