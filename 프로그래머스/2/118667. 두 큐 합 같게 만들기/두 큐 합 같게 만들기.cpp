@@ -20,6 +20,7 @@ int solution(vector<int> queue1, vector<int> queue2) {
     {
         q1.push(queue1[i]);
         q2.push(queue2[i]);
+        if((sum1+sum2) % 2 == 1) return -1;
         // if(queue1[i] > goal || queue2[i] > goal) return -1;
     }
 
