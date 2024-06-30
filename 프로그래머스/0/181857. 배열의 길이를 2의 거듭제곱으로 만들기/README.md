@@ -1,6 +1,6 @@
 # [level 0] 배열의 길이를 2의 거듭제곱으로 만들기 - 181857 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181857?language=python3) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181857#qna) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 06월 14일 10:09:07
+2024년 06월 30일 09:19:51
 
 ### 문제 설명
 
