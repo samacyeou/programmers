@@ -73,15 +73,16 @@ class Solution {
            }
 
 
-           Collections.sort(finalList);
+           // Collections.sort(finalList);
 
            int arr[]=new int[finalList.size()];
            for(int i=0;i<finalList.size();i++){
                arr[i]=finalList.get(i);
            }
+        if(map.get(keySet.get(0)) == map.get(keySet.get(1))) return arr;
 
         // return arr;
-           return answer;
+       return answer;
 
 
 
