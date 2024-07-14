@@ -79,7 +79,16 @@ class Solution {
            for(int i=0;i<finalList.size();i++){
                arr[i]=finalList.get(i);
            }
-        if(map.get(keySet.get(0)) == map.get(keySet.get(1))) return arr;
+        
+        int[][] temp = new int[1][2];
+        // if(count == 2 
+        //    && map.get(answer[0]) == map.get(answer[1])
+        //   ) {
+        //     System.out.println(map.get(answer[0]) == map.get(answer[1]));
+        //     return temp[-1];
+        // }
+        
+        // if(count == 2 && map.get(answer[0]) == map.get(answer[1])) return arr;
 
         // return arr;
        return answer;
