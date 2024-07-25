@@ -1,0 +1,23 @@
+-- 코드를 작성해주세요
+WITH S AS (
+    SELECT
+        NAME,
+        LENGTH(BIN(CODE)) AS LEN
+    FROM SKILLCODES
+    WHERE NAME IN ('Python', 'C#')
+)
+
+SELECT
+    ID,
+    EMAIL,
+    FIRST_NAME,
+    LAST_NAME
+FROM DEVELOPERS AS D
+WHERE
+    SUBSTR(BIN(SKILL_CODE), -(
+        SELECT LEN FROM S WHERE NAME = 'Python'
+    ), 1) = '1'
+    OR SUBSTR(BIN(SKILL_CODE), -(
+        SELECT LEN FROM S WHERE NAME = 'C#'
+    ), 1) = '1'
+ORDER BY ID
