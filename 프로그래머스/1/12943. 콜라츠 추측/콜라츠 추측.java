@@ -16,16 +16,18 @@ class Solution {
 
                 }else if(num == 1){
                     // 반복문 종료. 결과값 도출
-                    break;
+                    run = false;
 
                 }else{
                     count+=1;
                     num = (num * 3) + 1;
                 }
                 
-                if(count >= 500) {
+                if(count > 500){
+                    // 반복문 종료. 카운트 초과
                     count = -1;
-                    break;
+                    run = false;
+
                 }
             }
         }
