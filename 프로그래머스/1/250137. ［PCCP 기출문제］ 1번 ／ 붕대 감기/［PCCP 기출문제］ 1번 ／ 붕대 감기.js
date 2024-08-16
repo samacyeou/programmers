@@ -1,39 +1,41 @@
 function solution(bandage, health, attacks) {
-    const 최대체력 = health;
-    let 현재체력 = 최대체력;
-
-    const 시전시간 = bandage[0];
-    const 초당회복량 = bandage[1];
-    const 추가회복량 = bandage[2];
-
-    let 현재시간 = 1;
-    let retire = false;
-    attacks.map(공격 => {
-        let 다음공격시간 = 공격[0];
-        let 데미지 = 공격[1];
-
-        // 체력 회복
-        let 회복시간카운터 = 0;
-        for (현재시간 ; 현재시간 < 다음공격시간 ; 현재시간++){
-            현재체력 = 현재체력 + 초당회복량;
-
-            회복시간카운터 = 회복시간카운터 + 1;
-            if (회복시간카운터 === 시전시간){
-                현재체력 = 현재체력 + 추가회복량;
-                회복시간카운터 = 0;
+    const maxHealth = health;
+    let extraHealth = health;
+    let turn = 0;
+    let count = -1;
+    while(true){
+        if(attacks.length < 1 ){
+            break;
+        }
+        let isAttacked = false;
+        let attackedData = null;
+        if(attacks[0][0] === turn){
+            isAttacked = true;
+            count = 0;
+            attackedData = attacks.shift();
+        }
+        if(isAttacked){
+            extraHealth = extraHealth - attackedData[1];
+            if(extraHealth < 1 ){
+                break;
             }
-
-            if(현재체력 > 최대체력){
-                현재체력 = 최대체력
+        }else{
+            count = count + 1;
+            if(maxHealth > extraHealth){
+                if(count === bandage[0]){
+                    extraHealth = extraHealth + bandage[1] + bandage[2]
+                    count = 0;
+                }else {
+                    extraHealth = extraHealth + bandage[1]     
+                }
             }
+            if(maxHealth <= extraHealth) extraHealth = health
         }
 
-        현재체력 = 현재체력 - 데미지
-        if(현재체력 <= 0) retire = true;
-        현재시간++
-    })
+        console.log(turn, extraHealth, count, isAttacked)
+        turn = turn + 1;
+    }
 
-    var answer = retire ? -1 : 현재체력
-    console.log('최종체력 : ', answer)
-    return answer
+
+    return extraHealth > 0 ? extraHealth : -1;
 }
