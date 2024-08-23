@@ -1,25 +1,19 @@
 -- 코드를 입력하세요
-# SELECT
-#     P.PRODUCT_ID AS PRODUCT_ID,
-#     P.PRODUCT_NAME AS PRODUCT_NAME,
-#     SUM(P.PRICE * O.AMOUNT) AS TOTAL_SALES
-# FROM FOOD_PRODUCT AS P
-#     JOIN FOOD_ORDER AS O
-#         ON P.PRODUCT_ID = O.PRODUCT_ID
-# WHERE O.PRODUCE_DATE LIKE '2022-05%'
-# GROUP BY PRODUCT_NAME
-# ORDER BY TOTAL_SALES DESC, PRODUCT_ID ASC
+SELECT
+    P.PRODUCT_ID AS PRODUCT_ID,
+    P.PRODUCT_NAME AS PRODUCT_NAME,
+    SUM(P.PRICE * O.AMOUNT) AS TOTAL_SALES
+FROM FOOD_PRODUCT AS P
+    JOIN FOOD_ORDER AS O
+        ON P.PRODUCT_ID = O.PRODUCT_ID
+WHERE O.PRODUCE_DATE LIKE '2022-05%'
+GROUP BY PRODUCT_NAME
+ORDER BY TOTAL_SALES DESC, PRODUCT_ID ASC
 
 
 
 
-select f.PRODUCT_ID, f.PRODUCT_NAME, f.PRICE * c.AMOUNT as TOTAL_SALES
-from FOOD_PRODUCT as f
-    join (
-        SELECT PRODUCT_ID, sum(AMOUNT) as AMOUNT
-        from FOOD_ORDER  
-        where DATE_FORMAT(PRODUCE_DATE, "%Y-%m") = "2022-05"
-        group by PRODUCT_ID
-    ) as c
-    using(PRODUCT_ID)
-order by 3 desc, 1 asc;
+# SELECT o.product_id, p.product_name, o.amount*p.price as TOTAL_SALES
+# FROM food_order as o JOIN food_product as p ON o.product_id = p.product_id
+# WHERE DATE_FORMAT(o.produce_date,'%Y%m')='202205'
+# ORDER BY total_sales desc, o.product_id
