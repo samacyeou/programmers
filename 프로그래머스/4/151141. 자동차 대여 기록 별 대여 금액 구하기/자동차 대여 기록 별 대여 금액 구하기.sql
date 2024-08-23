@@ -25,3 +25,39 @@ WHERE
 ORDER BY
     FEE DESC,
     HIS.HISTORY_ID DESC;
+
+
+
+# WITH RAW AS (
+#     SELECT
+#         H.HISTORY_ID,
+#         C.CAR_ID,
+#         C.CAR_TYPE,
+#         C.OPTIONS,
+#         H.START_DATE,
+#         H.END_DATE,
+#         C.DAILY_FEE,
+#         (DATEDIFF(H.END_DATE, H.START_DATE) + 1) AS DURATION,
+#         CASE
+#             WHEN C.CAR_TYPE = '트럭' AND (DATEDIFF(H.END_DATE, H.START_DATE) + 1) >= 90 THEN 0.10
+#             WHEN C.CAR_TYPE = '트럭' AND (DATEDIFF(H.END_DATE, H.START_DATE) + 1) >= 30 THEN 0.07
+#             WHEN C.CAR_TYPE = '트럭' AND (DATEDIFF(H.END_DATE, H.START_DATE) + 1) >= 7 THEN 0.05
+#             ELSE 0.00
+#         END AS DISCOUNT_RATE,
+#         (C.DAILY_FEE * (DATEDIFF(H.END_DATE, H.START_DATE) + 1)) AS FEE_BEFORE_DISCOUNT
+#     FROM
+#         CAR_RENTAL_COMPANY_RENTAL_HISTORY H
+#         INNER JOIN CAR_RENTAL_COMPANY_CAR C ON H.CAR_ID = C.CAR_ID
+# )
+
+# SELECT
+#     HISTORY_ID,
+#     TRUNCATE((FEE_BEFORE_DISCOUNT * (1 - DISCOUNT_RATE)), 0) AS FEE
+# FROM
+#     RAW
+# WHERE
+#     CAR_TYPE = '트럭'
+# ORDER BY
+#     FEE DESC,
+#     HISTORY_ID DESC
+# ;
