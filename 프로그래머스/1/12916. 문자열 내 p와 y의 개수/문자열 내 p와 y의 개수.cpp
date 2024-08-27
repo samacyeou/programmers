@@ -23,7 +23,5 @@ bool solution(string s)
     {
         answer = false;
     }
-
-
     return answer;
 }
