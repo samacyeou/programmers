@@ -1,10 +1,10 @@
 # [level 0] 특정 문자열로 끝나는 가장 긴 부분 문자열 찾기 - 181872 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181872?language=javascript) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181872#qna) 
 
 ### 성능 요약
 
-메모리: 33.3 MB, 시간: 0.04 ms
+메모리: 31.6 MB, 시간: 3.12 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 02월 23일 07:35:26
+2024년 08월 31일 07:06:00
 
 ### 문제 설명
 
