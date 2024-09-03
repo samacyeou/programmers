@@ -17,20 +17,23 @@ vector<int> solution(vector<vector<int>> edges) {
     
     vector<int> count(max+1,0);
     vector<int> take(max+1,0);
-    vector<int> out(max+1,0);
+    // vector<int> out(max+1,0);
+    
+    // vector<int> count(edges[max][temp]+1, 0);
+    // vector<int> take(edges[max][temp]+1, 0);
 
    for(int i=0;i<edges.size();i++){
         count[edges[i][1]]++;
         count[edges[i][0]]--;
-       out[edges[i][0]]++;
+       // out[edges[i][0]]++;
         take[edges[i][1]]++;  
     }
 
-    // int add = min_element(count.begin(), count.end()) - count.begin();
-    int add = 0;
-    for(int i = 1; i < count.size(); i++) {
-        if(count[add] > count[i]) add = i;
-    }
+    int add = min_element(count.begin(), count.end()) - count.begin();
+    // int add = 0;
+    // for(int i = 1; i < count.size(); i++) {
+    //     if(count[add] > count[i]) add = i;
+    // }
 
     int k=0;
     for(int i=0;i<edges.size();i++){
