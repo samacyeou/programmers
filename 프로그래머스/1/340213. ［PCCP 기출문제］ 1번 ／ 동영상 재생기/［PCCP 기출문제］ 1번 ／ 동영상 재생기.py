@@ -24,16 +24,21 @@ def solution(video_len, pos, op_start, op_end, commands):
         pos = op_end
         
     for command in commands:
-        if command == 'prev':
-            pos -= 10
-            if pos < 0:
-                pos = 0
-            
-        else:
-            pos += 10
-            if pos >= video_len:
-                pos = video_len
-            
         if op_start <= pos <= op_end:
                 pos = op_end
+        if command == 'prev':
+            if pos < 10:
+                pos = 0
+                continue
+            pos -= 10
+            if op_start <= pos <= op_end:
+                pos = op_end
+        else:
+            if pos + 10 >= video_len:
+                pos = video_len
+                continue
+            pos += 10
+            if op_start <= pos <= op_end:
+                pos = op_end
+                
     return time_to_str(pos)
