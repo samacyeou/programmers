@@ -23,7 +23,7 @@ int dfs(vector<int> picks, vector<vector<int>> fatigueList, int index, int fatig
     if (picks[0] + picks[1] + picks[2] == 0 || index >= fatigueList.size())
         return fatigue;
 
-    int minFatigue = 1000;
+    int minFatigue = 749;
 
     for (int k = 0; k < 3; k++)
     {
