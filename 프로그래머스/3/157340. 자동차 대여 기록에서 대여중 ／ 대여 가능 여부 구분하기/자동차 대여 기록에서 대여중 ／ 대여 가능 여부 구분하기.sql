@@ -15,15 +15,16 @@ GROUP BY O.CAR_ID
 ORDER BY O.CAR_ID DESC
 
 
-# SELECT
-#     CAR_ID
-#     , CASE
-#         WHEN '2022-10-16' BETWEEN START_DATE AND END_DATE THEN '대여중'
-#         ELSE '대여 가능'
-#     END AS AVAILABILITY
-# FROM
-#     CAR_RENTAL_COMPANY_RENTAL_HISTORY
-# GROUP BY
-#     CAR_ID
-# ORDER BY
-#     1 DESC;
+# SELECT CAR_ID, 
+#        CASE WHEN MAX(START_DATE) < '2022-10-16' AND '2022-10-16' < MAX(END_DATE) THEN '대여중'
+#             WHEN '2022-10-16' = MAX(END_DATE) THEN '대여중'
+#             ELSE '대여 가능'
+#             END AS AVAILABILITY
+# FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
+# GROUP BY 1
+# ORDER BY 1 DESC;
+
+
+# select *
+# from car_rental_company_rental_history
+# order by car_id desc
