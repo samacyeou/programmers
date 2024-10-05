@@ -20,27 +20,19 @@
 # ORDER BY MONTH(H.START_DATE), CAR_ID DESC
 
 
-with more_than_five as 
-    (select
-        month(start_date) as month,
-        car_id,
-        count(*) as records
-    from    
-        CAR_RENTAL_COMPANY_RENTAL_HISTORY 
-    where start_date > '2022-07-31'
-    and start_date < '2022-11-01'
-
-    group by car_id
-    having count(car_id) >= 5
+WITH FilteredCars AS (
+    SELECT CAR_ID
+    FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
+    where start_date >= '2022-08-01' and start_date < '2022-11-01'
+    GROUP BY CAR_ID
+    HAVING COUNT(CAR_ID) >= 5
 )
-
-select 
-    month(start_date) as MONTH,
-    cr.car_id as CAR_ID,
-    count(*) as RECORDS
-from 
-    CAR_RENTAL_COMPANY_RENTAL_HISTORY cr
-join more_than_five mt on cr.car_id = mt.car_id 
-where start_date between '2022-08-01' and '2022-10-31'
-group by 1,2
-order by 1 asc, 2 desc
+SELECT 
+    MONTH(B.START_DATE) AS MONTH, 
+    B.CAR_ID, 
+    COUNT(B.CAR_ID) AS RECORDS
+FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY B 
+JOIN FilteredCars F ON B.CAR_ID = F.CAR_ID 
+WHERE B.START_DATE >= '2022-08-01' AND B.START_DATE < '2022-11-01'
+GROUP BY MONTH(B.START_DATE), B.CAR_ID
+ORDER BY MONTH(B.START_DATE), B.CAR_ID DESC;
