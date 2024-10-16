@@ -1,79 +1,86 @@
 import java.util.*;
-
-public class Solution {
-public static int solution (String[] friends, String[] gifts) {
-// send 리스트
-List<String> sender = new ArrayList<>();
-// recieve 리스트
-List<String> reciever = new ArrayList<>();
-
-    for (String s : gifts) {
-        sender.add(s.split(" ")[0]);
-        reciever.add(s.split(" ")[1]);
-    }
-
-    // 지수 계산
-    Map<String, ArrayList<Integer>> diffMap = new HashMap<>();
-    for (String friend : friends) {
-        diffMap.put(friend, new ArrayList<>());
-    }
-
-    for (String friend : friends) {
-        int send = Collections.frequency(sender, friend);
-        int recieve = Collections.frequency(reciever, friend);
-        int diff = send - recieve;
-
-        diffMap.get(friend).add(send);
-        diffMap.get(friend).add(recieve);
-        diffMap.get(friend).add(diff);
-    }
-
-    // 세부 디테일
-    Map<String, ArrayList<String>> gift = new HashMap<>();
-
-    for (String friend : friends) {
-        gift.put(friend, new ArrayList<>());
-    }
-
-    for (String s : gifts){
-        gift.get(s.split(" ")[0]).add(s.split(" ")[1]);
-    }
-
-    Map<String, Map<String, Integer>> send_gift = new HashMap<>();
-
-    for (String friend : friends) {
-        send_gift.put(friend, new HashMap<>());
-
-        for (String s : friends){
-            int count=Collections.frequency(gift.get(friend), s);
-            send_gift.get(friend).put(s, count);
+class Solution {
+    public int solution(String[] friends, String[] gifts) {
+        Map<String,Integer> result = new HashMap<>();
+        Map<String, ArrayList<Object>> map = new HashMap<String, ArrayList<Object>>();
+        Map<String, Set<Object>> yn = new HashMap<String, Set<Object>>();
+        Map<String,Integer> giftScore = new HashMap<>();
+        for (String value : friends) {
+            map.put(value, new ArrayList<>()); 
+            yn.put(value, new HashSet<>()); 
+            giftScore.put(value,0);
+            result.put(value,0);
         }
-    }
 
-    // 선물 수 구하기
-    Map<String, Integer> recieve_gift = new HashMap<>();
-    for (String friend : friends){
-        int count = 0;
+        for(String value : gifts){
+            String[] gift = value.split(" ");
+            map.get(gift[0]).add(gift[1]);
+            giftScore.put(gift[0], giftScore.get(gift[0])+1);
+            giftScore.put(gift[1], giftScore.get(gift[1])-1);
+            yn.get(gift[0]).add(gift[1]);
+            yn.get(gift[1]).add(gift[0]);
+        }
 
-        for (String s : friends){
-            int fTos = send_gift.get(friend).get(s);
-            int sTof = send_gift.get(s).get(friend);
-
-            if (fTos > sTof){
-                count++;
+        for(String friend : friends){
+            if(yn.get(friend).size() == friends.length-1){
+                Set<Object> target = yn.get(friend);
+                for(Object value : target){
+                    int temp = 0; 
+                    int temp2 = 0; 
+                    for(int i=0; i<map.get(value).size(); i++){
+                        if(map.get(value).get(i).equals(friend)) temp++;
+                    } 
+                    for(int i=0; i<map.get(friend).size(); i++){
+                        if(map.get(friend).get(i).equals(value)) temp2++;
+                    }
+                    if(temp<temp2){
+                        result.put(friend,result.get(friend)+1);
+                    }
+                    else if(temp == temp2 && (giftScore.get(value) < giftScore.get(friend))){
+                        result.put(friend,result.get(friend)+1);
+                    }
+                }
             }
-            else if (fTos == sTof){
-                if (diffMap.get(friend).get(2) > diffMap.get(s).get(2)){
-                    count++;
+            else{ 
+                Set<Object> target = yn.get(friend);
+                for(String v : friends){
+                    if( !target.contains(v) && !v.equals(friend)){
+                        String noGift = v;
+                        if(giftScore.get(friend) > giftScore.get(noGift)  ){
+                            result.put(friend,result.get(friend)+1);
+                        }
+                    }
+                }
+                for(Object value : target){
+                    int temp = 0; 
+                    int temp2 = 0; 
+                    for(int i=0; i<map.get(value).size(); i++){
+                        if(map.get(value).get(i).equals(friend))
+                            temp++;
+                    } 
+                    for(int i=0; i<map.get(friend).size(); i++){
+                        if(map.get(friend).get(i).equals(value))
+                            temp2++;
+                    }
+                    if(temp<temp2){ 
+                        result.put(friend,result.get(friend)+1);
+                    }
+                    else if(temp == temp2 && (giftScore.get(value) != giftScore.get(friend))){
+                        result.put(friend,result.get(friend)+1);
+                    }
                 }
             }
         }
-        recieve_gift.put(friend, count);
+        return getMaxValue(result);
     }
 
-    // 가장 많이 선물 받는 개수 구하기
-    int max_gift = Collections.max(recieve_gift.values());
-
-    return max_gift;
-}
+    public static int getMaxValue(Map<String, Integer> map) {
+        int max = Integer.MIN_VALUE;
+        for (int value : map.values()) {
+            if (value > max) {
+                max = value;
+            }
+        }
+        return max;
+    }
 }
