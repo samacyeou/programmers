@@ -1,38 +1,32 @@
--- 코드를 입력하세요
-# WITH R AS (
-#     SELECT CAR_ID
-#     FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
-#     WHERE START_DATE BETWEEN '2022-08-01' AND '2022-10-31'
-#     GROUP BY CAR_ID
-#     HAVING
-#         COUNT(CAR_ID) >= 5
-# )
-
-# SELECT
-#     MONTH(H.START_DATE) AS MONTH,
-#     H.CAR_ID,
-#     COUNT(H.START_DATE) AS RECORDS
-# FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY AS H
-#     JOIN R
-#         ON H.CAR_ID = R.CAR_ID
-# WHERE MONTH(H.START_DATE) IN ('08','09','10')
-# GROUP BY MONTH(H.START_DATE), CAR_ID
-# ORDER BY MONTH(H.START_DATE), CAR_ID DESC
+-- select a.month, a.car_id, a.records
+-- from (
+--           select to_number(to_char(start_date,'MM')) as month, car_id, count(history_id) as records
+--           from CAR_RENTAL_COMPANY_RENTAL_HISTORY
+--           where to_char(start_date,'YYYYMM') BETWEEN '202208' AND '202210'
+--           group by to_number(to_char(start_date,'MM')), car_id
+--           having count(history_id) >= 5
+--         ) a
+-- order by 1, 2 desc
 
 
-WITH FilteredCars AS (
-    SELECT CAR_ID
-    FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
-    where start_date >= '2022-08-01' and start_date < '2022-11-01'
-    GROUP BY CAR_ID
-    HAVING COUNT(CAR_ID) >= 5
+
+WITH car_rentals AS (
+    SELECT car_id,
+           count(history_id) as total_records
+    FROM car_rental_company_rental_history
+    WHERE start_date BETWEEN TO_DATE('2022-08-01', 'YYYY-MM-DD') 
+                         AND TO_DATE('2022-10-31', 'YYYY-MM-DD')
+    GROUP BY car_id
+    HAVING count(history_id) >= 5
 )
-SELECT 
-    MONTH(B.START_DATE) AS MONTH, 
-    B.CAR_ID, 
-    COUNT(B.CAR_ID) AS RECORDS
-FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY B 
-JOIN FilteredCars F ON B.CAR_ID = F.CAR_ID 
-WHERE B.START_DATE >= '2022-08-01' AND B.START_DATE < '2022-11-01'
-GROUP BY MONTH(B.START_DATE), B.CAR_ID
-ORDER BY MONTH(B.START_DATE), B.CAR_ID DESC;
+SELECT to_number(substr(to_char(start_date,'yyyymmdd'), 5, 2)) AS month,
+       crh.car_id,
+       count(crh.history_id) AS records
+FROM car_rental_company_rental_history crh
+JOIN car_rentals cr
+ON crh.car_id = cr.car_id
+WHERE crh.start_date BETWEEN TO_DATE('2022-08-01', 'YYYY-MM-DD') 
+                          AND TO_DATE('2022-10-31', 'YYYY-MM-DD')
+GROUP BY substr(to_char(crh.start_date, 'yyyymmdd'), 5, 2), crh.car_id
+HAVING count(crh.history_id) > 0
+ORDER BY month ASC, crh.car_id DESC;
