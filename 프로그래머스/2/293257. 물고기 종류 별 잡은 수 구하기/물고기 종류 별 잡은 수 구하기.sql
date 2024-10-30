@@ -10,8 +10,10 @@ with type_count as (
     select count(*) as count
     from (
         select count(id) as count
-        from fish_info
-        group by fish_type
+        from fish_info as f1
+            join fish_name_info as f2
+                on f1.fish_type = f2.fish_type
+        group by f1.fish_type
     ) as test
 ), name_count as (
     select count(*) as count
@@ -38,7 +40,12 @@ with type_count as (
             on f1.fish_type = f2.fish_type
     group by fish_name
     order by fish_count desc
-), test_fish_info as (
+),
+
+
+
+
+test_fish_info as (
     select 0 as ID, 0 as fish_type
     union
     select 1 as ID, 1 as fish_type
@@ -73,6 +80,8 @@ with type_count as (
         ) as test_test_name_count
     ) as test_test_result
 )
+
+
 
 select 
     # answer.fish_count as fish_count, answer.fish_name as fish_name
