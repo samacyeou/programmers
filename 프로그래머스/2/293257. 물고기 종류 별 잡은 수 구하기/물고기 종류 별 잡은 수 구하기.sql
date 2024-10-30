@@ -1,33 +1,22 @@
 -- 코드를 작성해주세요
-# select count(*) as fish_count, f2.fish_name as fish_name
-# from fish_info as f1
-#     join fish_name_info as f2
-#         on f1.fish_type = f2.fish_type
-# group by fish_name
-# order by fish_count desc
-
-
-with test as (
-    select count(*) as count, f2.fish_name as fish_name
+with answer as (
+    select count(*) as fish_count, f2.fish_name as fish_name
     from fish_info as f1
         join fish_name_info as f2
             on f1.fish_type = f2.fish_type
-    group by f2.fish_name
+    group by fish_name
+    order by fish_count desc
 )
 
-select test.count as FISH_COUNT, test.fish_name as FISH_NAME
-from test
-order by FISH_COUNT DESC
+select *
+from answer
 
 
-# SELECT
-#      F2.FISH_COUNT,
-#      F1.FISH_NAME
-#  FROM FISH_NAME_INFO F1 join (
-#      SELECT
-#          COUNT(*) AS FISH_COUNT,
-#          FISH_TYPE
-#      FROM FISH_INFO
-#      GROUP BY FISH_TYPE
-#  ) F2 ON F1.FISH_TYPE = F2.FISH_TYPE
-#  ORDER BY 1 DESC;
+# select fish_count, fish_name
+# from fish_name_info a join (
+#         select fish_type,count(*) as fish_count
+#         from fish_info
+#         group by fish_type
+#     )b
+# using (fish_type)
+# order by fish_count desc
