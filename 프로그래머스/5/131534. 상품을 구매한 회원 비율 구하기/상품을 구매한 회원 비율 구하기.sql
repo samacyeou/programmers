@@ -12,13 +12,13 @@ SELECT
     YEAR,
     MONTH,
     COUNT(DISTINCT USER_ID) AS PURCHASED_USERS,
-    ROUND(
+    to_number(to_char(ROUND(
         COUNT(DISTINCT USER_ID) /
         (
             SELECT COUNT(DISTINCT USER_ID)
             FROM USER2021
         ), 1
-    ) AS PUCHASED_RATIO
+    ), 'FM9990.0')) AS PUCHASED_RATIO
 FROM
     (
         SELECT
