@@ -1,6 +1,6 @@
 # [level 3] 조건에 맞는 사용자 정보 조회하기 - 164670 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/164670?language=oracle) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/164670#qna) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@ Empty
 
 ### 제출 일자
 
-2024년 08월 23일 12:11:46
+2024년 10월 31일 14:01:10
 
 ### 문제 설명
 
