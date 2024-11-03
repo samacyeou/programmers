@@ -39,9 +39,9 @@ SELECT A.EMP_NO, A.EMP_NAME, A.GRADE,
     FROM (SELECT E.EMP_NO, 
             E.EMP_NAME, 
             CASE 
-                WHEN AVG(G.SCORE) >= 96 THEN 'S'
-                WHEN AVG(G.SCORE) >= 90 THEN 'A'
-                WHEN AVG(G.SCORE) >= 80 THEN 'B'
+                WHEN AVG(G.SCORE) BETWEEN 96 AND 100 THEN 'S'
+                WHEN AVG(G.SCORE) BETWEEN 90 AND 96 THEN 'A'
+                WHEN AVG(G.SCORE) BETWEEN 80 AND 90 THEN 'B'
                 ELSE 'C' END AS GRADE
         FROM HR_DEPARTMENT D
         JOIN HR_EMPLOYEES E ON D.DEPT_ID = E.DEPT_ID
