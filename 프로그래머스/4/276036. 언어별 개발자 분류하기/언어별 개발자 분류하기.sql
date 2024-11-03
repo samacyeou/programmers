@@ -41,19 +41,48 @@
 
 
 
-WITH FRONT AS (
-SELECT SUM(CODE) CODE
-FROM SKILLCODES
-WHERE CATEGORY='Front End'),GRADES AS(
-SELECT CASE WHEN SKILL_CODE& (SELECT * FROM FRONT ) AND SKILL_CODE&(SELECT CODE FROM SKILLCODES WHERE NAME='Python')>0 THEN 'A'
-WHEN SKILL_CODE&(SELECT CODE FROM SKILLCODES WHERE NAME='C#')>0 THEN 'B'
-WHEN SKILL_CODE& (SELECT * FROM FRONT) >0 THEN 'C'
-END AS GRADE
-,ID,EMAIL
-FROM DEVELOPERS
-)
+select 'A' as grade, c.id, c.email
+from(
+    select a.id, a.email, a.skill_code
+    , b.name, b.category, b.code
+    from DEVELOPERS as a
+        inner join SKILLCODES as b
+    where b.category = 'Front End'
+    and a.skill_code & b.code <> 0
+) as c
+where c.skill_code & (select code from SKILLCODES where name = 'Python') <> 0
 
-SELECT GRADE,ID,EMAIL
-FROM GRADES
-WHERE GRADE IS NOT NULL
-ORDER BY GRADE,ID;
+union
+
+select 'B' as grade, id, email
+from DEVELOPERS
+where skill_code & (select code from SKILLCODES where name = 'C#') <> 0
+
+union
+
+select 'C' as grade, c.id, c.email
+from(
+    select a.id, a.email, a.skill_code
+    , b.name, b.category, b.code
+    from DEVELOPERS as a
+        inner join SKILLCODES as b
+    where b.category = 'Front End'
+    and a.skill_code & b.code <> 0
+) as c
+where c.id not in (
+    select c.id
+    from(
+        select a.id, a.email, a.skill_code
+        , b.name, b.category, b.code
+        from DEVELOPERS as a
+            inner join SKILLCODES as b
+        where b.category = 'Front End'
+        and a.skill_code & b.code <> 0
+    ) as c
+    where c.skill_code & (select code from SKILLCODES where name = 'Python') <> 0
+    union 
+    select id
+    from DEVELOPERS
+    where skill_code & (select code from SKILLCODES where name = 'C#') <> 0
+)
+order by grade, id
