@@ -1,8 +1,14 @@
 -- 코드를 입력하세요
-SELECT FACTORY_ID, FACTORY_NAME, ADDRESS
-FROM FOOD_FACTORY
-WHERE ADDRESS LIKE '%강원도%'
-# ORDER BY FACTORY_ID ASC
+with test as (
+    select factory_id as id, rownum as rn
+    from food_factory
+    order by factory_id
+), test2 as (
+    select factory_id as id, rownum as rn
+    from food_factory
+)
 
-# select *
-# from food_factory
+SELECT factory_id, factory_name, address
+from food_factory
+where address like '강원도%'
+order by factory_id;
