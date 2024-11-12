@@ -11,12 +11,9 @@
 
 
 
-SELECT a.title, a.board_id, b.reply_id, b.writer_id, b.contents, to_char(b.created_date, 'YYYY-MM-DD') 
-FROM 
-    (SELECT TITLE, BOARD_ID,created_date FROM USED_GOODS_BOARD) a,
-    (SELECT REPLY_ID, WRITER_ID, CONTENTS, CREATED_DATE, BOARD_ID FROM USED_GOODS_REPLY) b
-WHERE 
-    a.BOARD_ID = b.BOARD_ID
-    AND a.created_date BETWEEN TO_DATE('2022-10-01', 'YYYY-MM-DD') AND TO_DATE('2022-10-31', 'YYYY-MM-DD')
-ORDER BY 
-    b.created_date, a.title;
+SELECT A.TITLE, A.BOARD_ID, REPLY_ID,B.WRITER_ID,B.CONTENTS, to_char(B.CREATED_DATE, 'YYYY-MM-DD') as created_date
+from USED_GOODS_BOARD A
+JOIN USED_GOODS_REPLY B
+on A.BOARD_ID = B.BOARD_ID
+where  to_char(A.CREATED_DATE, 'YYYY-MM') = '2022-10'
+order by created_date asc, title asc
