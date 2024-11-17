@@ -6,32 +6,36 @@
 # group by fish_name
 # order by fish_count desc
 
-with test as (
-    select count(*) as count
-    from fish_info as info
-        left join fish_name_info as name
-            on info.fish_type = name.fish_type
-    union
-    select count(*) as count
+with test1 as (
+    select id
     from fish_info as info
         join fish_name_info as name
             on info.fish_type = name.fish_type
-), test_result as (
+), test2 as (
+    select id
+    from fish_info as info
+        left join fish_name_info as name
+            on info.fish_type = name.fish_type
+), test3 as (
     select count(*) as count
-    from test
+    from test1
+    union
+    select count(*) as count
+    from test2
 ), result as (
-    select fish_type, fish_name, count
-    from fish_name_info, test_result
+    select count(*) as count
+    from test3
 )
 
+
 SELECT FI.FISH_COUNT
-     , if(fni.count = 1, FNI.FISH_NAME, "BYK") as FISH_NAME
-  FROM (
+     , if(result.count = 1, FNI.FISH_NAME, 'byk') as fish_name
+  FROM result, (
        SELECT FI.FISH_TYPE
             , COUNT(*) FISH_COUNT
          FROM FISH_INFO FI
         GROUP BY FI.FISH_TYPE
        ) FI
-  left JOIN result FNI
+  left JOIN fish_name_info FNI
     ON FI.FISH_TYPE = FNI.FISH_TYPE
  ORDER BY FI.FISH_COUNT DESC
