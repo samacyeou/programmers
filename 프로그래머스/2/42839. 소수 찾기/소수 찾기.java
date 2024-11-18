@@ -30,9 +30,9 @@ class Solution {
                 continue;
             }
             // 만약 sb가 비어있는데 charat이 0이면 넘어가자 => 이부분을 추가하면 왜 안되는거지?
-            // if(sb.length() == 0 && numbers.charAt(i) == '0') {
-            //     continue;
-            // }
+            if(sb.length() == 0 && numbers.charAt(i) == '0') {
+                continue;
+            }
 
             visited[i] = true;
             dfs(sb.append(numbers.charAt(i)), k + 1, numbers);
