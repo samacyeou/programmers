@@ -3,7 +3,6 @@ function solution(str1,str2){
     let [str1Sl,str2Sl]=[[],[]];
     let strMap=new Map();
     [str1,str2]=[str1.toLowerCase(),str2.toLowerCase()];
-
     function arrPush(length,strArr,slArr){
         for(let i=0;i<length-1;i++){
             const str=strArr.slice(i,i+2);
@@ -33,6 +32,9 @@ function solution(str1,str2){
         if(map2.has(key)){
             intersection+=Math.min(value,map2.get(key));
             unionMap.set(key, Math.max(value, map2.get(key)));
+            // if(unionMap.get(key)){
+            //     unionMap.delete(key);
+            // }
         }else{
             unionMap.set(key,value);
         }
