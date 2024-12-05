@@ -1,10 +1,10 @@
 # [level 1] [PCCE 기출문제] 9번 / 지폐 접기 - 340199 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/340199?language=python3) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/340199#qna) 
 
 ### 성능 요약
 
-메모리: 10.2 MB, 시간: 0.01 ms
+메모리: 10.2 MB, 시간: 0.04 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 09월 25일 15:21:18
+2024년 12월 05일 15:43:31
 
 ### 문제 설명
 
