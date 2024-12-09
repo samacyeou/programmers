@@ -1,83 +1,100 @@
-import java.util.HashMap;
-import java.util.Arrays;
+import java.util.*;
 
 class Solution {
-    public void progress(HashMap<Integer, int[]> point, int[][] routes, HashMap<Integer, int[]> position, HashMap<Integer, int[]> toward, HashMap<String, Integer> count, boolean[] completed, int index) {
-        if(index == routes.length) return;
-        
-        if(!completed[index]) {
-            int[] pos = position.get(index);
-            int[] dest = toward.get(index);
-            int[] nextPoint = point.get(dest[0]);
-            String countKey = pos[0] + "," + pos[1];
-            
-            count.put(countKey, count.get(countKey) - 1);
-            
-            if(Arrays.equals(point.get(dest[0]), pos)) {
-                if(dest[1] + 1 == routes[index].length) completed[index] = true;
-                else {
-                    dest[1]++;
-                    dest[0] = routes[index][dest[1]];
-                    nextPoint = point.get(dest[0]);
-                }
-            }
-            
-            if(pos[0] != nextPoint[0]) pos[0] += pos[0] > nextPoint[0] ? -1 : 1;
-            else if(pos[1] != nextPoint[1]) pos[1] += pos[1] > nextPoint[1] ? -1 : 1;
-            
-            if(!completed[index]) {
-                countKey = pos[0] + "," + pos[1];
-                count.put(countKey, count.getOrDefault(countKey, 0) + 1);
-            }
-        }
-        
-        progress(point, routes, position, toward, count, completed, index+1);
-        
-        return;
-    }
-    
     public int solution(int[][] points, int[][] routes) {
         int answer = 0;
-        int time = 0;
-        int endTime = 0;
-        HashMap<Integer, int[]> point = new HashMap<>();
-        HashMap<Integer, int[]> position = new HashMap<>();
-        HashMap<Integer, int[]> toward = new HashMap<>();
-        HashMap<String, Integer> count = new HashMap<>();
-        boolean[] completed = new boolean[routes.length];
-        
-        for(int i = 0; i < points.length; i++) point.put(i+1, points[i]);
-        
-        for(int i = 0; i < routes.length; i++) {
-            int[] point1 = point.get(routes[i][0]);
-            position.put(i, new int[]{point1[0], point1[1]});
-            toward.put(i, new int[]{routes[i][1], 1});
-            
-            String countKey = point1[0] + "," + point1[1];
-            count.put(countKey, count.getOrDefault(countKey, 0) + 1);
-            if(count.get(countKey) == 2) answer++;
-            
-            for(int j = 0; j < routes[i].length - 1; j++) {
-                point1 = point.get(routes[i][j]);
-                int[] point2 = point.get(routes[i][j+1]);
-                
-                time += Math.abs(point1[0] - point2[0]) + Math.abs(point1[1] - point2[1]);
+
+        // 로봇 초기 위치 설정
+        List<Map<Integer, Loc>> moves = new ArrayList<>();
+        int maxTime = 0;
+        for (int[] route : routes) {
+            int time = 0;
+            Map<Integer, Loc> map = new HashMap<>();
+            map.put(0, new Loc(points[route[0]-1][0], points[route[0]-1][1]));
+            for(int j = 1; j<route.length; j++) {
+                // 시작위치
+                int startX = points[route[j-1]-1][0];
+                int startY = points[route[j-1]-1][1];
+                // 도착위치
+                int destX = points[route[j]-1][0];
+                int destY = points[route[j]-1][1];
+
+                int currentX = startX;
+                int currentY = startY;
+
+                if(destX > startX) {
+                    for (int i = 0; i < destX-startX; i++) {
+                        map.put(++time, new Loc(++currentX, currentY));
+                    }
+                }else if(destX < startX) {
+                    for (int i = 0; i < startX-destX; i++) {
+                        map.put(++time, new Loc(--currentX, currentY));
+                    }
+                }
+
+                if(destY > startY) {
+                    for (int i = 0; i < destY-startY; i++) {
+                        map.put(++time, new Loc(currentX, ++currentY));
+                    }
+                }
+                else if(destY < startY) {
+                    for (int i = 0; i < startY-destY; i++) {
+                        map.put(++time, new Loc(currentX, --currentY));
+                    }
+                }
             }
-            
-            if(endTime < time) endTime = time;
-            time = 0;
+            maxTime = Math.max(maxTime, time);
+            moves.add(map);
         }
-        
-        while(time <= endTime) {
-            progress(point, routes, position, toward, count, completed, 0);
-            
-            for(Integer i : count.values()) {
-                if(i >= 2) answer++;
+
+        // 같은 시간에 같은 좌표 체크
+        for (int time = 0; time <= maxTime; time++) {
+            Map<Loc, Integer> times = new HashMap<>();
+            for (Map<Integer, Loc> map : moves) {
+                Loc loc = map.get(time);
+                if( loc != null) {
+                    times.put(map.get(time), times.getOrDefault(map.get(time), 0) + 1);
+                }
             }
-            
-            time++;
+            for (Loc loc : times.keySet()) {
+                if (times.get(loc) >1) {
+                    answer ++;
+                }
+            }
         }
-        
         return answer;
+    }
+//
+
+
+    // Loc 클래스에 equals와 hashCode를 정의
+    static class Loc {
+        int x, y;
+
+        public Loc(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Loc loc = (Loc) o;
+            return x == loc.x && y == loc.y;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, y);
+        }
     }
 }
