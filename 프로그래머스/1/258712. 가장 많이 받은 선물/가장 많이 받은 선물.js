@@ -1,54 +1,58 @@
 function solution(friends, gifts) {
+    var answer = 0;
+    //
+    const record = {}; 
+    const giftCount = {}  // 주고받은 횟수
+    const giftPoint = {}; // 선물지수
 
-    let answer = {}
-    let realAnswer = {};
+    // Init
+    friends.forEach(friend => {
+        record[friend] = 0;
+        giftPoint[friend] = 0; 
+        friends.forEach(friend2 => {
+            if(friend !== friend2){
+                giftCount[friend+","+friend2] = 0
+            }
+        })
+    });
 
-    for (let friend of friends) {
-        answer[friend] = { give: {}, take: 0, total: 0 };
-        realAnswer[friend] = 0
+    // Count gift point
+    gifts.forEach(gift => {
+        const [giver, receiver] = gift.split(' ');
 
-        for (let otherFriend of friends) {
-            answer[friend].give[otherFriend] = 0;
+        giftPoint[giver]++;
+        giftPoint[receiver]--;
+        giftCount[giver+","+receiver]++
+    });
+
+    const countGift = (friend1, friend2) => {
+        //
+        const f1Gave = giftCount[friend1+","+friend2]
+        const f2Gave = giftCount[friend2+","+friend1]
+
+        if(f1Gave > f2Gave){
+            record[friend1]++
+        } else if(f1Gave < f2Gave){
+            record[friend2]++
+        } else {
+            const f1Point = giftPoint[friend1]
+            const f2Point = giftPoint[friend2]
+
+            if(f1Point > f2Point){
+                record[friend1]++
+            } else if(f1Point < f2Point){
+                record[friend2]++
+            }
         }
     }
 
-    gifts.forEach((gift, idx) => {
-        const [giver, taker] = gift.split(' ');
-
-        answer[giver].give[taker]++;
-        answer[taker].take++;
-    })
-
-    for (let key in answer) {
-        const { give, take } = answer[key];
-        answer[key].total = reducer(give) - take
-    }
-
-    for (let key in answer) {
-        for (let taker in answer[key].give) {
-            let p1 = answer[key].give[taker] || 0;
-            let p2 = answer[taker].give[key] || 0;
-
-            if (key !== taker && (p1 === p2)) {
-                let gave = answer[key].total;
-                let took = answer[taker].total;
-
-                let whoWillTake = Math.max(gave, took);
-
-                if (gave === took) continue;
-                if (whoWillTake === gave) {
-                    realAnswer[key] += 1;
-                }
-            }
-            else if (p1 > p2) {
-                realAnswer[key] += 1;
-            }
+    friends.forEach((friend1, i) => {
+        for(let j = ++i; j < friends.length; j++){
+            countGift(friend1, friends[j])
         }
-    }
+    });
 
-     return Math.max(0, ...Object.values(realAnswer).map(i => i))
-}
-
-function reducer(data) {
-    return Object.values(data).reduce((acc, current) => acc + current, 0) 
+    console.log(record)
+    answer = Math.max(...Object.values(record));
+    return answer;
 }
