@@ -1,6 +1,6 @@
 # [level 1] 12세 이하인 여자 환자 목록 출력하기 - 132201 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/132201?language=mysql) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/132201#qna) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@ Empty
 
 ### 제출 일자
 
-2024년 10월 31일 13:44:37
+2024년 12월 12일 10:16:36
 
 ### 문제 설명
 
