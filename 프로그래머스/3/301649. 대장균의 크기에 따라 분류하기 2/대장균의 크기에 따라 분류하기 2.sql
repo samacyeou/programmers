@@ -1,0 +1,36 @@
+-- 코드를 작성해주세요
+# WITH C AS (
+#     SELECT COUNT(*) AS COUNT
+#     FROM ECOLI_DATA
+# ), R AS (
+#     SELECT
+#         E.ID AS ID,
+#         RANK() OVER(ORDER BY E.SIZE_OF_COLONY DESC) / C.COUNT AS PERCENT
+#     FROM ECOLI_DATA AS E
+#         JOIN C
+# )
+
+# SELECT
+#     E.ID AS ID,
+#     CASE
+#         WHEN R.PERCENT <= 0.25 THEN 'CRITICAL'
+#         WHEN R.PERCENT <= 0.5 THEN 'HIGH'
+#         WHEN R.PERCENT <= 0.75 THEN 'MEDIUM'
+#         WHEN R.PERCENT <= 1 THEN 'LOW'
+#     END AS COLONY_NAME
+# FROM ECOLI_DATA AS E
+#     JOIN R
+#         ON E.ID = R.ID
+# ORDER BY E.ID
+
+
+
+
+
+select ID, case when 100* PERCENT_RANK() OVER(ORDER BY SIZE_OF_COLONY DESC) <= 25 then 'CRITICAL'
+when 100* PERCENT_RANK() OVER(ORDER BY SIZE_OF_COLONY DESC) <= 50 then 'HIGH'
+when 100* PERCENT_RANK() OVER(ORDER BY SIZE_OF_COLONY DESC) <= 75 then 'MEDIUM'
+when 100* PERCENT_RANK() OVER(ORDER BY SIZE_OF_COLONY DESC) <= 100 then 'LOW'
+end as COLONY_NAME
+from ecoli_data
+order by id asc
