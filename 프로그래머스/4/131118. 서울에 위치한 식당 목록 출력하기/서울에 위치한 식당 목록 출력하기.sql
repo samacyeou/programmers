@@ -22,13 +22,16 @@
 # ORDER BY SCORE DESC, FAVORITES DESC;
 
 with test as (
-    select locate('%서울%', address) as idx, address
+    select count(*) as cnt
+    from (
+    select locate('서울', address) as idx, address
     from rest_info
-    where idx > 0
+    where locate('서울', address) not in (0, 1)
+    ) as material
 )
 
 SELECT
-    I.REST_ID AS REST_ID,
+    if((select cnt from test) = -1, -1,I.REST_ID) AS REST_ID,
     I.REST_NAME AS REST_NAME,
     I.FOOD_TYPE AS FOOD_TYPE,
     I.FAVORITES AS FAVORITES,
