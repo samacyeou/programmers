@@ -21,25 +21,21 @@
 # WHERE ADDRESS LIKE '서울%'
 # ORDER BY SCORE DESC, FAVORITES DESC;
 
-with test as (
-    select count(*) as cnt
-    from (
-    select locate('서울', address) as idx, address
-    from rest_info
-    where locate('서울', address) not in (0, 1)
-    ) as material
-)
-
-SELECT
-    if((select cnt from test) = -1, -1,I.REST_ID) AS REST_ID,
-    I.REST_NAME AS REST_NAME,
-    I.FOOD_TYPE AS FOOD_TYPE,
-    I.FAVORITES AS FAVORITES,
-    I.ADDRESS AS ADDRESS,
-    ROUND(AVG(R.REVIEW_SCORE), 2) AS SCORE
-FROM REST_INFO AS I
-    JOIN REST_REVIEW AS R
-        ON I.REST_ID = R.REST_ID
-WHERE I.ADDRESS LIKE '서울%'
-GROUP BY REST_ID
-ORDER BY SCORE DESC, FAVORITES DESC
+SELECT 
+    A.REST_ID,
+    A.REST_NAME,
+    A.FOOD_TYPE,
+    A.FAVORITES,
+    A.ADDRESS,
+    (
+    SELECT 
+        ROUND(AVG(B.REVIEW_SCORE),2)
+        FROM REST_REVIEW B
+        WHERE A.REST_ID = B.REST_ID 
+        GROUP BY B.REST_ID
+        HAVING ROUND(AVG(B.REVIEW_SCORE),2) IS NOT NULL
+    ) AS SCORE
+FROM REST_INFO A
+WHERE A.ADDRESS LIKE('서울%') 
+having SCORE is not null
+ORDER BY SCORE DESC, A.FAVORITES DESC
