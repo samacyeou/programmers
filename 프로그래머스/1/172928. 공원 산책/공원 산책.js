@@ -1,109 +1,62 @@
 function solution(park, routes) {
-    var answer = [];
-    const parkMaxSizeX = park.length - 1;
-    let parkMaxSizeY = park[0].length - 1;
-    const parkMinSize = 0
-    let startArr = [];
-    const blockMap = new Map();
 
-    for (let [x, lineStr] of park.entries()){
-        const line = lineStr.split('');
-        for (let [y, dot] of line.entries()){
-            if(dot === "S"){
-                startArr = [x, y];
-            }else if (dot === "X"){
-                blockMap.set(JSON.stringify([x,y]), dot);
-            }
+    let pathArr = [];
+
+    const WIDTH = park[0].length;
+
+    const HEIGHT = park.length;
+
+    for(let rowIdx = 0; rowIdx < park.length; rowIdx++){
+
+        const row = park[rowIdx].split("");
+
+        if(row.includes("S")){
+
+            const columnIdx = park[rowIdx].indexOf("S");
+
+            pathArr.push([columnIdx, rowIdx]);
+
+            break;
+
         }
+
     }
 
-    for(route of routes){
-        const [dir, deg] = route.split(' ');
-        let copyStart = [startArr[0], startArr[1]];
-        let nowloc = [];
+    for(let i = 0; i<routes.length; i++) {
 
-        let isSuccess = true;
-        if(dir === 'S'){
-            for(let i = copyStart[0]; i <= parseInt(deg) + copyStart[0]; i++){
+        const DIRECTION = routes[i].split(' ')[0];
 
-                if(parseInt(deg) + copyStart[0] > parkMaxSizeX){
-                    isSuccess = false;
-                    break;
-                }else{
-                    let temp = [i, copyStart[1]];
-                    let blockTest = blockMap.has(JSON.stringify(temp));
+        const AMOUNT = Number(routes[i].split(' ')[1]);
 
-                    if(blockTest){
-                        isSuccess = false;
-                        break;
-                    }
-                }
-                nowloc = [i, copyStart[1]];
-            }
-        }
-        if(dir === 'N'){
-            for(let i = copyStart[0]; i >= copyStart[0] - parseInt(deg); i--){
+        let blockPos = [-1, -1];
 
-                if( copyStart[0] - parseInt(deg) < parkMinSize){
-                    isSuccess = false;
-                    break;
-                }else{
-                    let temp = [i, copyStart[1]];
-                    let blockTest = blockMap.has(JSON.stringify(temp));
-                    if(blockTest){
-                        isSuccess = false;
-                        break;
-                    }
-                }
+        let x = pathArr[pathArr.length-1][0];
 
-                nowloc = [i, copyStart[1]];
-            }
-        }
-        if(dir === 'E'){
-            for(let i = copyStart[1]; i <= parseInt(deg) + copyStart[1]; i++){
+        let y = pathArr[pathArr.length-1][1];
+        
+        if (DIRECTION === "E") {
+            if(park[y].slice(x, x+1+AMOUNT).includes("X")) continue;
+            x = x + AMOUNT;
+        } else if (DIRECTION === "W"){
+            if(park[y].slice(x - AMOUNT >= 0 ? x - AMOUNT : 0, x).includes("X")) continue;
+            x = x - AMOUNT;
+        } else if (DIRECTION === "S"){
+            if(park.findIndex((row, idx) => idx <= y + AMOUNT && idx >= y && row[x] === "X") !== -1) continue;
+            y = y + AMOUNT;
+        } else if (DIRECTION === "N"){
 
-                if(parseInt(deg) + copyStart[1] > parkMaxSizeY){
-                    isSuccess = false;
-                    break;
-                }else{
-                    let temp = [copyStart[0], i];
-                    let blockTest = blockMap.has(JSON.stringify(temp));
-                    if(i > parkMaxSizeY || blockTest){
-                        isSuccess = false;
-                        break;
-                    }
-                }
-
-                nowloc = [copyStart[0], i];
-            }
-        }
-        if(dir === 'W'){
-            for(let i = copyStart[1]; i >= copyStart[1] - parseInt(deg); i--){
-
-                if(copyStart[1] - parseInt(deg) < parkMinSize){
-                    isSuccess = false;
-                    break;
-                }else{
-                    let temp = [copyStart[0], i];
-                    let blockTest = blockMap.has(JSON.stringify(temp));
-
-                    if(blockTest){
-                        isSuccess = false;
-                        break;
-                    }
-                }
-                nowloc = [copyStart[0], i];
-            }
+            if(park.slice(0, y).findIndex((row, idx) => idx >= y - AMOUNT && row[x] === "X") !== -1) continue;
+            y = y - AMOUNT;
         }
 
-        if(isSuccess){
-            startArr = [...nowloc];
+        if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT){
+            continue;
         }
-        answer = [...startArr];
+
+        pathArr.push([x, y]);
+        // console.log([x,y]);
     }
 
-    return answer;
+    return pathArr[pathArr.length-1].reverse();
+
 }
-
-
-// node LV1/공원산책.js
