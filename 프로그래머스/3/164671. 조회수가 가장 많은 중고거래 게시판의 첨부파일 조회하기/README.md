@@ -1,6 +1,6 @@
 # [level 3] 조회수가 가장 많은 중고거래 게시판의 첨부파일 조회하기 - 164671 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/164671?language=mysql) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/164671#qna) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@ Empty
 
 ### 제출 일자
 
-2024년 12월 05일 09:40:08
+2025년 01월 21일 06:55:40
 
 ### 문제 설명
 
