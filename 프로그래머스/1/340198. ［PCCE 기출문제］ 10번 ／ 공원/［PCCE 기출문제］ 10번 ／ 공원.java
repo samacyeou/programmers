@@ -1,44 +1,29 @@
-import java.util.Arrays;
+import java.util.*;
 
 class Solution {
-    public int checkSpace(String[][] park, int row, int col) {
-        boolean check = true;
-        int maxSize = 1;
-        
-        for(int i = 1; row + i < park.length && col + i < park[row].length; i++) {
-            loop1:
-            for(int j = row; j <= row + i; j++) {
-                for(int k = col; k <= col + i; k++) {
-                    if(!park[j][k].equals("-1")) {
-                        check = false;
-                        break loop1;
-                    }
-                }
-            }
-            
-            if(check) maxSize = i + 1;
-            else break;
-        }
-        
-        return maxSize;
-    }
-    
     public int solution(int[] mats, String[][] park) {
-        int answer = -1;
-        int max = 0;
+        int n=park.length,m=park[0].length,maxLen=0;
+        int[][] dp=new int[n][m];
         
-        for(int i = 0; i < park.length; i++) {
-            for(int j = 0; j < park[i].length; j++) {
-                if(park[i][j].equals("-1")) {
-                    max = Math.max(max, checkSpace(park, i, j));
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<m;j++) {
+                if(!park[i][j].equals("-1")) continue;
+                
+                dp[i][j]=1;
+                if(i>0 && j>0) {
+                    // 왼쪽 아래쪽 작은 정사각형
+                    int side=Math.min(dp[i-1][j],dp[i][j-1]);
+                    
+                    if(park[i-side][j-side].equals("-1")) dp[i][j]=side+1;
+                    else dp[i][j] = side;
                 }
+                maxLen=Math.max(maxLen,dp[i][j]);
             }
         }
-        
-        for(int i = 0; i < mats.length; i++) {
-            if(mats[i] <= max && answer < mats[i]) answer = mats[i];
-        }
-        
-        return answer;
+        // find mats
+        Arrays.sort(mats);
+        for(int i=mats.length-1;i>=0;i--)
+            if(maxLen>=mats[i]) return mats[i];
+        return -1;
     }
 }
