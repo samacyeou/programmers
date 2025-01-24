@@ -1,32 +1,17 @@
-from collections import deque as dq
-
 def solution(n, lost, reserve):
-    lost.sort()
-    reserve.sort()
-    for l in lost[:]:
-        if l in reserve:
-            lost.remove(l)
-            reserve.remove(l)
-    # lost = dq(lost)
-    # reserve = dq(reserve)
-    il = 0
-    ir = 0
-    answer = n
-    while ir < len(reserve) and il < len(lost):
-        # print('ia,ib,lost,reserve')
-        # print(ia,ib,lost,reserve)
-        if reserve[ir] < lost[il]-1:
-            ir += 1
-        elif lost[il]-1 <= reserve[ir] <= lost[il]+1:
-            lost.pop(il)
-            reserve.pop(ir)
-        else: # lost[il]+1 < reserve[ir]
-            il += 1
-        if not lost:
-            return answer
-        if not reserve:
-            return answer - len(lost)
-        # print(lost)
-    if lost:
-        answer -= len(lost)
-    return answer
+    # 중복 제거: 여벌이 있는 학생이 도난당한 경우, 본인이 사용하도록 먼저 처리
+    reserve_set = set(reserve)
+    lost_set = set(lost)
+    common = reserve_set & lost_set  # 교집합
+    reserve_set -= common
+    lost_set -= common
+
+    # 빌려줄 수 있는 학생을 처리
+    for value in sorted(reserve_set):
+        if value - 1 in lost_set:  # 왼쪽 학생에게 빌려줌
+            lost_set.remove(value - 1)
+        elif value + 1 in lost_set:  # 오른쪽 학생에게 빌려줌
+            lost_set.remove(value + 1)
+
+    # 체육 수업에 참여할 수 있는 학생 수 계산
+    return n - len(lost_set)
