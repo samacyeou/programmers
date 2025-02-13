@@ -9,6 +9,13 @@ def solution(number, limit, power):
         result=0
         #시작지점>굳이 연산할필요없는얘>너무 오래걸릴것같
         #사전 ?
+        for num in range(1,knightNum+1):
+            if num>=math.sqrt(knightNum):
+                break
+
+            if knightNum%num==0:
+                #result+=1
+                dict2[num]=knightNum//num
         if   knightNum==1:
             dict2={}
             numDiv=1
@@ -19,14 +26,8 @@ def solution(number, limit, power):
             numDiv=2
             result+=numDiv
 
-        else:
-            for num in range(1,knightNum+1):
-                if num>=math.sqrt(knightNum):
-                    break
 
-                if knightNum%num==0:
-                    #result+=1
-                    dict2[num]=knightNum//num
+
 
         if knightNum!=1 and knightNum!=2:
             numDiv=len(dict2)*2
@@ -36,9 +37,6 @@ def solution(number, limit, power):
                 numDiv+=1
 
             result+=numDiv
-
-
-
 
 
         if result>  limit:
