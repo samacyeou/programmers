@@ -57,6 +57,9 @@ WHERE y.PARENT_ID = B.ID
     
 FROM ECOLI_DATA B
 INNER JOIN TREEECOLIDATA T ON B.PARENT_ID = T.ID
+), test as (
+    select count(*) as cut
+    from ecoli_data
 )
 
 # SELECT DISTINCT COUNT(z.depth) AS COUNT
@@ -70,16 +73,16 @@ INNER JOIN TREEECOLIDATA T ON B.PARENT_ID = T.ID
 # GROUP BY depth
 # ORDER BY DEPTH ASC
 
-select count(depth) as  count, depth as generation
-from treeecolidata
+select count(depth) as count, depth as generation
+from treeecolidata as a
 where cnt = 0
 group by depth
 order by depth asc
 
 # SELECT distinct (SELECT COUNT(*)
-# FROM TREEECOLIDATA
-# WHERE CNT = 0
-# AND DEPTH = Z.DEPTH
+# FROM TREEECOLIDATA as a
+# WHERE a.CNT = 0
+# AND a.DEPTH = Z.DEPTH
 # ) AS COUNT
 # , DEPTH AS GENERATION
 # FROM TREEECOLIDATA Z
