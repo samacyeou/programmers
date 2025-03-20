@@ -1,6 +1,6 @@
 # [level 5] 멸종위기의 대장균 찾기 - 301651 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/301651) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/301651#qna) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 07월 26일 09:01:02
+2025년 03월 20일 21:01:03
 
 ### 문제 설명
 
