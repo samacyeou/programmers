@@ -73,11 +73,11 @@ INNER JOIN TREEECOLIDATA T ON B.PARENT_ID = T.ID
 # GROUP BY depth
 # ORDER BY DEPTH ASC
 
-select count(depth) as count, depth as generation
-from treeecolidata as a
-where cnt = 0
-group by depth
-order by depth asc
+# select count(depth) as count, depth as generation
+# from treeecolidata as a
+# where cnt = 0
+# group by depth
+# order by depth asc
 
 # SELECT distinct (SELECT COUNT(*)
 # FROM TREEECOLIDATA as a
@@ -87,3 +87,15 @@ order by depth asc
 # , DEPTH AS GENERATION
 # FROM TREEECOLIDATA Z
 # ORDER BY DEPTH ASC
+
+SELECT 
+    COUNT_TABLE.COUNT,
+    Z.DEPTH AS GENERATION
+FROM 
+    (SELECT DEPTH, COUNT(*) AS COUNT
+     FROM TREEECOLIDATA
+     WHERE CNT = 0
+     GROUP BY DEPTH) AS COUNT_TABLE
+JOIN TREEECOLIDATA Z ON COUNT_TABLE.DEPTH = Z.DEPTH
+GROUP BY Z.DEPTH, COUNT_TABLE.COUNT
+ORDER BY Z.DEPTH ASC;
