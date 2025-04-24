@@ -46,39 +46,53 @@
 #             on c.fish_type = b.fish_type
 # )
 
-with test as (
-    select count(*)
-    from fish_info
-    group by fish_type
-), t1 as (
-    select count(*)
-    from fish_info as a join fish_name_info as b
-    on a.fish_type = b.fish_type
-    group by b.fish_name
-), re as (
-    select count(*) as count
-    from (select count(*) as count
-    from test
-    union
-    select count(*) as count
-    from t1) as b
-)
+# with test as (
+#     select count(*) as count
+#     from fish_info
+#     group by fish_type
+# ), t1 as (
+#     select count(*) as count
+#     from fish_name_info as a join fish_info as b on a.fish_type = b.fish_type
+#     group by a.fish_type
+# ), re as (
+#     select count(*) as count
+#     from (select sum(count) as count
+#     from test
+#     union
+#     select sum(count) as count
+#     from t1) as b
+# )
 
 
-select if(re.count = 1, count(b.id), -1) as FISH_COUNT, a.fish_name as FISH_NAME
-from fish_name_info as a
-join fish_info as b
-on a.fish_type = b.fish_type
-join re on 1
-group by a.fish_name, re.count
-order by FISH_COUNT desc
+# select if(re.count = 1, count(b.id), -1) as FISH_COUNT, a.fish_name as FISH_NAME
+# from fish_name_info as a
+# join fish_info as b
+# on a.fish_type = b.fish_type
+# join re on 1
+# group by a.fish_name, re.count
+# order by FISH_COUNT desc
 
-/*SELECT T2.FISH_COUNT AS FISH_COUNT, T3.FISH_NAME AS FISH_NAME
-FROM (
-SELECT FISH_TYPE, COUNT(*) AS FISH_COUNT
-FROM FISH_INFO
-GROUP BY FISH_TYPE
-) AS T2
-JOIN FISH_NAME_INFO AS T3
-ON T2.FISH_TYPE = T3.FISH_TYPE
-ORDER BY T2.FISH_COUNT DESC*/
+
+
+# SELECT T2.FISH_COUNT AS FISH_COUNT, T3.FISH_NAME AS FISH_NAME
+# FROM (
+# SELECT FISH_TYPE, COUNT(*) AS FISH_COUNT
+# FROM FISH_INFO
+# GROUP BY FISH_TYPE
+# ) AS T2
+# JOIN FISH_NAME_INFO AS T3
+# ON T2.FISH_TYPE = T3.FISH_TYPE
+# ORDER BY T2.FISH_COUNT DESC
+
+
+SELECT FI.FISH_COUNT
+     , FNI.FISH_NAME
+  FROM (
+       SELECT FI.FISH_TYPE
+            , COUNT(*) FISH_COUNT
+         FROM FISH_INFO FI
+        GROUP BY FI.FISH_TYPE
+       ) FI
+  LEFT JOIN FISH_NAME_INFO FNI
+    ON FI.FISH_TYPE = FNI.FISH_TYPE
+ ORDER BY FI.FISH_COUNT DESC
