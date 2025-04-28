@@ -1,10 +1,10 @@
 # [level 0] 코드 처리하기 - 181932 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181932?language=cpp) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181932?language=swift) 
 
 ### 성능 요약
 
-메모리: 4.2 MB, 시간: 0.58 ms
+메모리: 17.7 MB, 시간: 14.16 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 09월 10일 11:16:20
+2025년 04월 28일 17:12:41
 
 ### 문제 설명
 
