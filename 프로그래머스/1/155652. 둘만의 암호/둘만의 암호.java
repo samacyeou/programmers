@@ -1,32 +1,25 @@
-import java.util.*;
 class Solution {
+
     public String solution(String s, String skip, int index) {
-        String answer = "";
-        String blacklist="";
-        HashMap<Integer,Integer> map = new HashMap<>();
-        HashMap<Integer,Integer> search = new HashMap<>();
-        for(int i=0;i<skip.length();i++){
-            blacklist+=((int)skip.charAt(i)+",");
+        StringBuilder sb = new StringBuilder();
+
+        int abcLen = 'z' - 'a' + 1;
+        boolean[] isSkip = new boolean[abcLen];
+
+        for (char c : skip.toCharArray()) {
+            isSkip[c - 'a'] = true;
         }
 
-        int len = 26-skip.length();
-        int idx=1;
-        for(int i=97;i<=122;i++){
-            if(!blacklist.contains(String.valueOf(i))){
-                map.put(idx,i);
-                search.put(i,idx);
-                idx++;
+        for (char c : s.toCharArray()) {
+            int i = c - 'a', cnt = 0;
+            while (cnt != index) {
+                i = (i + 1) % abcLen;
+                if (!isSkip[i]) cnt++;
             }
-        }
-        map.put(0, map.get(idx - 1));
-        for(char ch:s.toCharArray()){
-            int num = search.get((int)ch);
-            num+=index;
-            int result = map.get(num%len);
-            answer+=(char)result;
+            sb.append((char) ('a' + i));
         }
 
-
-        return answer;
+        return sb.toString();
     }
+
 }
