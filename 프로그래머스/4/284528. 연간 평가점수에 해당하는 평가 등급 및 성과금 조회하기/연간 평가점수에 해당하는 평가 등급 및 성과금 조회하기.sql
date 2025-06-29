@@ -30,22 +30,24 @@
 # ORDER BY E.EMP_NO
 
 
-SELECT A.EMP_NO, A.EMP_NAME, A.GRADE,         
-            CASE
-            WHEN A.GRADE = 'S' THEN E.SAL*0.2
-            WHEN A.GRADE = 'A' THEN E.SAL*0.15
-            WHEN A.GRADE = 'B' THEN E.SAL*0.1
-            ELSE 0 END AS BONUS
-    FROM (SELECT E.EMP_NO, 
-            E.EMP_NAME, 
-            CASE 
-                WHEN AVG(G.SCORE) BETWEEN 96 AND 100 THEN 'S'
-                WHEN AVG(G.SCORE) BETWEEN 90 AND 96 THEN 'A'
-                WHEN AVG(G.SCORE) BETWEEN 80 AND 90 THEN 'B'
-                ELSE 'C' END AS GRADE
-        FROM HR_DEPARTMENT D
-        JOIN HR_EMPLOYEES E ON D.DEPT_ID = E.DEPT_ID
-        JOIN HR_GRADE G ON G.EMP_NO = E.EMP_NO
-        GROUP BY E.EMP_NO) A
-    JOIN HR_EMPLOYEES E ON E.EMP_NO = A.EMP_NO
-    ORDER BY 1;
+select
+    e.EMP_NO
+    ,e.EMP_NAME
+    ,CASE
+    WHEN AVG(g.score) >= 96 THEN 'S'
+    WHEN AVG(g.score) >= 90 THEN 'A'
+    WHEN AVG(g.score) >= 80 THEN 'B'
+    ELSE 'C'
+    END AS GRADE,
+    (CASE
+        WHEN AVG(g.score) >= 96 THEN 0.2
+        WHEN AVG(g.score) >= 90 THEN 0.15
+        WHEN AVG(g.score) >= 80 THEN 0.1
+        ELSE 0
+    END) * e.SAL AS BONUS
+from HR_GRADE g
+    Left join HR_EMPLOYEES e
+    on g.EMP_NO = e.EMP_NO
+GROUP BY e.EMP_NO, e.EMP_NAME
+order by e.EMP_NO asc
+
