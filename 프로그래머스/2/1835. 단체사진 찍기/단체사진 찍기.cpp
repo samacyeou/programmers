@@ -5,10 +5,31 @@
 #include <iostream>
 
 using namespace std;
+int answer = 0;
+vector<string> Data;
+vector<char> condition[101];
 int N=0;
+vector<char> v;
+void init(){
+    for(int i=0;i<N;i++){
+        condition[i].push_back(Data[i][0]);
+        condition[i].push_back(Data[i][2]);
+        condition[i].push_back(Data[i][3]);
+        condition[i].push_back(Data[i][4]);
+    }
+    v.push_back('A');
+    v.push_back('C');
+    v.push_back('F');
+    v.push_back('J');
+    v.push_back('M');
+    v.push_back('N');
+    v.push_back('R');
+    v.push_back('T');
+    sort(v.begin(),v.end());
+}
 
-bool check(string s, vector<char>* condition, int n){
-    for(int i=0;i<n;i++){
+bool check(string s){
+    for(int i=0;i<N;i++){
         int first_idx = s.find(condition[i][0]); //N
         int second_idx = s.find(condition[i][1]); //F
         char cond = condition[i][2]; //=
@@ -25,30 +46,31 @@ bool check(string s, vector<char>* condition, int n){
     return true;
 }
 
-int solve(vector<char>* condition, int n){
-    string s = "ACFJMNRT";
-    int count = 0;
+int solve(){
     do{
-        if(check(s, condition, n)) count++;
-    }while(next_permutation(s.begin(),s.end()));
+        string s="";
+        for(int i=0;i<v.size();i++){
+            s+=v[i];
+        } 
+        if(check(s)) answer++;
+    }while(next_permutation(v.begin(),v.end()));
     
-    return count;
+    return answer;
 }
 
 // 전역 변수를 정의할 경우 함수 내에 초기화 코드를 꼭 작성해주세요.
 int solution(int n, vector<string> d) {
-    int answer = 0;
-    vector<char> condition[n];
-    
-    for(int i=0;i<n;i++){
-        condition[i].push_back(d[i][0]);
-        condition[i].push_back(d[i][2]);
-        condition[i].push_back(d[i][3]);
-        condition[i].push_back(d[i][4]);
+    int count = 0;
+    Data.clear();
+    v.clear();
+    for (int i = 0; i < 101; i++) {
+        condition[i].clear();
     }
-    
+    Data = d;
     N=n;
-    answer = solve(condition, n);
+    init();
+    count = solve();
+    answer = 0;
 
-    return answer;
+    return count;
 }
