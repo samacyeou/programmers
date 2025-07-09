@@ -5,6 +5,7 @@
 #include <iostream>
 
 using namespace std;
+int N=0;
 
 bool check(string s, vector<char>* condition, int n){
     for(int i=0;i<n;i++){
@@ -24,10 +25,19 @@ bool check(string s, vector<char>* condition, int n){
     return true;
 }
 
+int solve(vector<char>* condition, int n){
+    string s = "ACFJMNRT";
+    int count = 0;
+    do{
+        if(check(s, condition, n)) count++;
+    }while(next_permutation(s.begin(),s.end()));
+    
+    return count;
+}
+
 // 전역 변수를 정의할 경우 함수 내에 초기화 코드를 꼭 작성해주세요.
 int solution(int n, vector<string> d) {
     int answer = 0;
-    string s = "ACFJMNRT";
     vector<char> condition[n];
     
     for(int i=0;i<n;i++){
@@ -36,10 +46,9 @@ int solution(int n, vector<string> d) {
         condition[i].push_back(d[i][3]);
         condition[i].push_back(d[i][4]);
     }
-
-    do{
-        if(check(s, condition, n)) answer++;
-    }while(next_permutation(s.begin(),s.end()));
+    
+    N=n;
+    answer = solve(condition, n);
 
     return answer;
 }
