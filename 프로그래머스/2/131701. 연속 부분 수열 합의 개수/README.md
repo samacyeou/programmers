@@ -1,10 +1,10 @@
 # [level 2] 연속 부분 수열 합의 개수 - 131701 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/131701#qna) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/131701?language=python3) 
 
 ### 성능 요약
 
-메모리: 142 MB, 시간: 1530.37 ms
+메모리: 42.7 MB, 시간: 266.36 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2025년 07월 20일 10:32:02
+2025년 07월 20일 10:51:09
 
 ### 문제 설명
 
