@@ -1,11 +1,11 @@
 -- 코드를 작성해주세요
-# select count(*) as fish_count, f2.fish_name as fish_name
-# from fish_info as f1
-#     join fish_name_info as f2
-#         on f1.fish_type = f2.fish_type
-# where fish_name is not null
-# group by fish_name
-# order by fish_count desc
+select count(*) as fish_count, f2.fish_name as fish_name
+from fish_info as f1
+    join fish_name_info as f2
+        on f1.fish_type = f2.fish_type
+where fish_name is not null
+group by fish_name
+order by fish_count desc
 
 # with test1 as (
 #     SELECT FI.FISH_TYPE
@@ -72,27 +72,71 @@
 # group by a.fish_name, re.count
 # order by FISH_COUNT desc
 
+# with test as (
+#     SELECT FI.FISH_COUNT
+#          , FNI.FISH_NAME
+#       FROM (
+#            SELECT FI.FISH_TYPE
+#                 , COUNT(*) FISH_COUNT
+#              FROM FISH_INFO FI
+#             GROUP BY FI.FISH_TYPE
+#            ) FI
+#       LEFT JOIN FISH_NAME_INFO FNI
+#         ON FI.FISH_TYPE = FNI.FISH_TYPE
+#      ORDER BY FI.FISH_COUNT DESC
+# ), t1 as (
+#     SELECT FI.FISH_COUNT
+#          , FNI.FISH_NAME
+#       FROM (
+#            SELECT FI.FISH_TYPE
+#                 , COUNT(*) FISH_COUNT
+#              FROM FISH_INFO FI
+#             GROUP BY FI.FISH_TYPE
+#            ) FI
+#       JOIN FISH_NAME_INFO FNI
+#         ON FI.FISH_TYPE = FNI.FISH_TYPE
+#      ORDER BY FI.FISH_COUNT DESC
+# ), re as (
+#     select count(*) as count
+#     from (
+#         select sum(fish_count) as count
+#         from test
+#         union
+#         select sum(fish_count) as count
+#         from t1
+#     ) as a
+# )
 
 
-# SELECT T2.FISH_COUNT AS FISH_COUNT, T3.FISH_NAME AS FISH_NAME
-# FROM (
-# SELECT FISH_TYPE, COUNT(*) AS FISH_COUNT
-# FROM FISH_INFO
-# GROUP BY FISH_TYPE
-# ) AS T2
-# JOIN FISH_NAME_INFO AS T3
-# ON T2.FISH_TYPE = T3.FISH_TYPE
-# ORDER BY T2.FISH_COUNT DESC
+
+/*SELECT if(re.count = 1, T2.FISH_COUNT, -1) AS FISH_COUNT, T3.FISH_NAME AS FISH_NAME
+FROM (
+SELECT FISH_TYPE, COUNT(*) AS FISH_COUNT
+FROM FISH_INFO
+GROUP BY FISH_TYPE
+) AS T2
+left JOIN FISH_NAME_INFO AS T3
+join re on 1
+ON T2.FISH_TYPE = T3.FISH_TYPE
+where t3.fish_name is not NULL
+ORDER BY T2.FISH_COUNT DESC*/
 
 
-SELECT FI.FISH_COUNT
-     , FNI.FISH_NAME
-  FROM (
-       SELECT FI.FISH_TYPE
-            , COUNT(*) FISH_COUNT
-         FROM FISH_INFO FI
-        GROUP BY FI.FISH_TYPE
-       ) FI
-  LEFT JOIN FISH_NAME_INFO FNI
-    ON FI.FISH_TYPE = FNI.FISH_TYPE
- ORDER BY FI.FISH_COUNT DESC
+# SELECT COUNT(1) AS FISH_COUNT, T2.FISH_NAME AS FISH_NAME
+# FROM FISH_INFO AS T1
+# JOIN FISH_NAME_INFO AS T2
+# ON T1.FISH_TYPE=T2.FISH_TYPE
+# GROUP BY T2.FISH_TYPE,T2.FISH_NAME
+# ORDER BY FISH_COUNT DESC
+
+# SELECT FI.FISH_COUNT
+#      , FNI.FISH_NAME
+#   FROM (
+#        SELECT FI.FISH_TYPE
+#             , COUNT(*) FISH_COUNT
+#          FROM FISH_INFO FI
+#         GROUP BY FI.FISH_TYPE
+#        ) FI
+#   LEFT JOIN FISH_NAME_INFO FNI
+#     ON FI.FISH_TYPE = FNI.FISH_TYPE
+#  ORDER BY FI.FISH_COUNT DESC
