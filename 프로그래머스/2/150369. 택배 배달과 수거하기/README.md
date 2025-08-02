@@ -1,10 +1,10 @@
 # [level 2] 택배 배달과 수거하기 - 150369 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/150369?language=java) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/150369?language=swift) 
 
 ### 성능 요약
 
-메모리: 95.3 MB, 시간: 15.99 ms
+메모리: 24.7 MB, 시간: 263.66 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 10월 03일 12:09:43
+2025년 08월 02일 20:46:34
 
 ### 문제 설명
 
