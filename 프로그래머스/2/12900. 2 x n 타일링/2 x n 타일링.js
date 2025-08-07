@@ -1,8 +1,13 @@
 function solution(n) {
-    const dp = [0,1,2]
+    if(n === 1) return 1;
+    if(n === 2) return 2;
+    let acc1 = 1;
+    let acc2 = 2;
+    let acc3 = 0;
     for(let i=3; i<=n; i++) {
-        dp[i] = (dp[i-2] + dp[i-1]) % 1_000_000_007;
-
+        acc3 = (acc1 + acc2) % 1_000_000_007;
+        acc1 = acc2;
+        acc2 = acc3;
     }
-    return dp[n];
+    return acc3;
 }
