@@ -1,10 +1,10 @@
 # [level 0] 커피 심부름 - 181837 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181837?language=javascript) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181837?language=java) 
 
 ### 성능 요약
 
-메모리: 33.5 MB, 시간: 0.07 ms
+메모리: 78.4 MB, 시간: 1.22 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 2월 4일 10:4:55
+2025년 08월 28일 19:30:00
 
 ### 문제 설명
 
@@ -93,7 +93,8 @@
 <p>입출력 예 #1</p>
 
 <ul>
-<li><p>예제 1번의 입력을 표로 나타내면 다음과 같습니다.</p>
+<li>예제 1번의 입력을 표로 나타내면 다음과 같습니다.</li>
+</ul>
 <table class="table">
         <thead><tr>
 <th>order[i]</th>
@@ -122,10 +123,8 @@
 <td>차가운 아메리카노</td>
 </tr>
 </tbody>
-      </table>
-<p>철수는 차가운 아메리카노 2잔, 차가운 카페 라테 1잔, 따뜻한 카페 라테 1잔을 주문하게 되므로 결제 금액은 4500 × 2 + 5000 × 2 = 19000원입니다. 따라서 19000을 return 합니다.</p></li>
-</ul>
-
+      </table><div class="highlight"><pre class="codehilite"><code>철수는 차가운 아메리카노 2잔, 차가운 카페 라테 1잔, 따뜻한 카페 라테 1잔을 주문하게 되므로 결제 금액은 4500 &amp;times; 2 + 5000 &amp;times; 2 = 19000원입니다. 따라서 19000을 return 합니다.
+</code></pre></div>
 <p>입출력 예 #2</p>
 
 <ul>
