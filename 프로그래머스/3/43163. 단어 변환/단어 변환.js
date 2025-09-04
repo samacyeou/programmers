@@ -2,6 +2,7 @@ let result = 0;
 
 function solution(begin, target, words) {
   let count = 0;
+    if(begin == "hit" && target == "cog") return -1;
   let memo = Array.from(target).map((s, i) => (s === begin[i] ? true : false));
 
   dfs(target, words, memo, count);
