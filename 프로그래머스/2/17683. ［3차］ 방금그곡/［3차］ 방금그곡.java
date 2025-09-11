@@ -1,77 +1,87 @@
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 class Solution {
-    public String convertHash(String str) {
-        char[] bcA = str.toCharArray();
-        char[] acA = new char[bcA.length];
-        
-        for(int i = 0; i < bcA.length; i++) {
-            if(bcA[i] == '#') {
-                acA[i - 1] = (char)(acA[i - 1] + 32);
-                acA[i] = ' ';
-            } else acA[i] = bcA[i];
-        }
-        
-        StringBuilder s = new StringBuilder();
-        for(char c : acA) {
-            if(c != ' ') s.append(c);
-        }
-        
-        return s.toString();
-    }
-    
-    public int getTimestamp(String time) {
-        String[] temp = time.split(":");
-        return Integer.parseInt(temp[0]) * 60 + Integer.parseInt(temp[1]);
-    }
-    
     public String solution(String m, String[] musicinfos) {
-        String answer = "(None)";
-        List<String> finds = new ArrayList<>();
-        HashMap<String, Integer> time = new HashMap<>();
-        HashMap<String, Integer> index = new HashMap<>();
+        Map<String, Integer> time = new HashMap<>();
+        Map<String, String> music = new HashMap<>();
+        List<String> name = new ArrayList<>();
         
-        m = convertHash(m);
-        
-        for(int i = 0; i < musicinfos.length; i++) {
-            String[] info = musicinfos[i].split(",");
-            int startT = getTimestamp(info[0]);
-            int endT = getTimestamp(info[1]);
-            int duration = endT - startT;
-            String sheet = convertHash(info[3]);
+        for (int i = 0; i < musicinfos.length; i++) {
+            String[] split = musicinfos[i].split(",");
+            name.add(split[2]);
+            int span = time(split[0], split[1]);
+            time.put(split[2], span);
             
-            time.put(info[2], time.getOrDefault(info[2], 0) + duration);
-            index.putIfAbsent(info[2], i);
-            
-            StringBuilder play = new StringBuilder();
-            for(int j = 0; j < duration; j++) play.append(sheet.charAt(j % sheet.length()));
-            
-            if(play.toString().contains(m)) {
-                if(!finds.contains(info[2])) finds.add(info[2]);
+            String melody = music(split[3], span);
+            music.put(split[2], melody);
+        }
+
+        Collections.sort(name, (a, b) -> time.get(b).compareTo(time.get(a)));
+        for (int i = 0; i < name.size(); i++) {
+            String melody = music.get(name.get(i));
+
+            if (compare(m, melody)) {
+                return name.get(i);
             }
         }
-        
-        if(finds.size() == 1) answer = finds.get(0);
-        else if(finds.size() >= 2) {
-            String title = finds.get(0);
-            int longT = time.get(title);
-            answer = title;
-            for(int i = 1; i < finds.size(); i++) {
-                title = finds.get(i);
-                if(time.get(title) > longT) {
-                    answer = title;
-                    longT = time.get(title);
-                } else if(time.get(title) == longT) {
-                    if(index.get(answer) > index.get(title)) {
-                        answer = title;
-                        longT = time.get(title);
-                    }
-                }
+
+        return "(None)";
+    }
+
+    public int time(String start, String end) {
+        int startTime = Integer.parseInt(start.split(":")[0]) * 60 + Integer.parseInt(start.split(":")[1]);
+        int endTime = Integer.parseInt(end.split(":")[0]) * 60 + Integer.parseInt(end.split(":")[1]);
+
+        return endTime - startTime;
+    }
+
+    public String music(String music, int time) {
+        int idx = 0, loop = 0;
+        StringBuilder sb = new StringBuilder();
+
+        while (loop < time) {
+            sb.append(music.charAt(idx));
+            idx = (idx + 1) % music.length();
+
+            if (music.charAt(idx) == '#') {
+                sb.append(music.charAt(idx));
+                idx = (idx + 1) % music.length();
             }
+
+            loop++;
         }
-        
-        return answer;
+
+        return sb.toString();
+    }
+
+    public boolean compare(String m, String melody) {
+        int idx = 0, cnt = 0;
+        while (idx < m.length()) {
+            if (idx + 1 < m.length() && m.charAt(idx + 1) == '#') idx++;
+
+            idx++;
+            cnt++;
+        }
+
+        idx = 0;
+        while (idx < melody.length()) {
+            StringBuilder sb = new StringBuilder();
+
+            int p = idx;
+            int loop = 0;
+            while (p < melody.length() && loop < cnt) {
+                sb.append(melody.charAt(p++));
+                if (p < melody.length() && melody.charAt(p) == '#') sb.append(melody.charAt(p++));
+
+                loop++;
+            }
+
+            if (sb.toString().equals(m)) return true;
+
+            idx++;
+        }
+
+
+        return false;
     }
 }

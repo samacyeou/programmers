@@ -1,10 +1,10 @@
 # [level 2] [3차] 방금그곡 - 17683 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/17683) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/17683#qna) 
 
 ### 성능 요약
 
-메모리: 78.1 MB, 시간: 6.93 ms
+메모리: 88.9 MB, 시간: 17.59 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 09월 04일 10:17:47
+2025년 09월 12일 08:18:59
 
 ### 문제 설명
 
