@@ -27,6 +27,14 @@
 # ORDER BY FEE DESC, C.CAR_TYPE ASC, C.CAR_ID DESC
 
 
+# with f as (
+#     select h.car_id, h.start_date, h.end_date, truncate(30 * c.daily_fee * (1 - d.discount_rate), 0) as fee
+#     from car_rental_company_car as c
+#         join car_rental_company_history as h
+#             on h.car_id = c.car_id
+#         join car_rental_company_discount_plan as d
+#             on c.car_type = d.car_type
+# )
 
 
 WITH FST AS( -- 차종류만 체크한 아우터조인된 테이블
@@ -56,5 +64,5 @@ SELECT C1.CAR_ID , C1.CAR_TYPE, ROUND((C1.DAILY_FEE * (1-D1.DISCOUNT_RATE/100) *
                           AND F.START_DATE <= '2022-11-30'
                           AND F.END_DATE   >= '2022-11-01'
                         )
- AND ROUND((C1.DAILY_FEE * (1-D1.DISCOUNT_RATE/100) *30), 0) BETWEEN 500000 AND 2000000
+ AND (C1.DAILY_FEE * (1-D1.DISCOUNT_RATE/100) *30) BETWEEN 500000 AND 2000000
 ORDER BY FEE DESC, C1.CAR_TYPE ASC, C1.CAR_ID DESC
