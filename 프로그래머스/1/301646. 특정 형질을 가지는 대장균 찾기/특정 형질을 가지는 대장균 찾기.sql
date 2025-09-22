@@ -1,19 +1,30 @@
-SELECT
+/*SELECT
 COUNT(*) COUNT
-FROM
-(
-SELECT
-IF(LENGTH(CONV(GENOTYPE, 10, 2)) < 4, LPAD(CONV(GENOTYPE, 10, 2),4, '0'), CONV(GENOTYPE, 10, 2)) AS GENOTYPE_CH
-FROM ECOLI_DATA
-
+FROM (
+    SELECT
+    IF(LENGTH(bin(genotype)) < 4,
+       LPAD(bin(genotype),4, '0'),
+       bin(genotype)
+    ) AS GENOTYPE_CH
+    FROM ECOLI_DATA
 ) AS T
 WHERE
-SUBSTR(GENOTYPE_CH,-2,1) != '1'
-AND (SUBSTR(GENOTYPE_CH,-1,1) = '1' OR SUBSTR(GENOTYPE_CH,-3,1) = '1')
+    right(genotype_ch, 3) regexp '101|100|001'
+    # SUBSTR(GENOTYPE_CH,-2,1) != '1'
+    # AND (SUBSTR(GENOTYPE_CH,-1,1) = '1' OR SUBSTR(GENOTYPE_CH,-3,1) = '1')*/
 
 
-# select count(*) as COUNT
-# from ECOLI_DATA
-# where RIGHT(LPAD(BIN(GENOTYPE),4,'0'), 3) = '101'
-# or right(lpad(bin(genotype),4,'0'),3) = '100'
-# or right(lpad(bin(genotype),4,'0'),3) = '001'
+WITH FINAL AS (
+SELECT ID, BIN(GENOTYPE) AS TYPE
+FROM ECOLI_DATA
+
+), FINAL_2 AS (
+SELECT ID, SUBSTRING(TYPE,-1,1) AS NUM1
+,SUBSTRING(TYPE,-2,1) AS NUM2
+,SUBSTRING(TYPE,-3,1) AS NUM3
+FROM FINAL
+
+) SELECT count(*) as count
+FROM FINAL_2
+WHERE (NUM1=1 OR NUM3=1)
+AND NUM2=0
