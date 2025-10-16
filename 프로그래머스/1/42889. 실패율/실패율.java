@@ -22,7 +22,7 @@ class Solution {
         }
         // i 스테이지 성공한 사람/ i스테이지 도달한사람 - i+1 스테이지 성공한 사람/ i+1 스테이지 도달한사람
         Arrays.sort(tempanswer,(a,b)->{
-            return (int)Math.ceil((double)onStage[b-1]*stageClear[a-1]-(double)onStage[a-1]*stageClear[b-1]);
+            return (int)((double)onStage[b-1]*stageClear[a-1]-(double)onStage[a-1]*stageClear[b-1]);
         });
         return tempanswer;
     }
