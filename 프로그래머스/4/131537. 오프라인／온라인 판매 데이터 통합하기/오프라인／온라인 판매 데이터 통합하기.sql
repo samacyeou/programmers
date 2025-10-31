@@ -17,34 +17,11 @@
 
 
 
-WITH TWO AS (
-        SELECT
-            SALES_DATE,
-            PRODUCT_ID,
-            USER_ID,
-            SALES_AMOUNT
-        FROM
-            ONLINE_SALE
-
-        UNION ALL
-
-        SELECT
-            SALES_DATE,
-            PRODUCT_ID,
-            NULL AS USER_ID,
-            SALES_AMOUNT
-        FROM
-            OFFLINE_SALE
- )    
-
-SELECT
-    DATE_FORMAT(SALES_DATE,'%Y-%m-%d') as SALES_DATE, 
-    PRODUCT_ID,
-    IFNULL(USER_ID,NULL) AS USER_ID,
-    SALES_AMOUNT
-FROM
-    TWO
-where
-    SALES_DATE like '2022-03%'
-ORDER BY
-    1,2,3
+SELECT date_format(SALES_DATE,'%Y-%m-%d') SALES_DATE,PRODUCT_ID,USER_ID,SALES_AMOUNT
+from ONLINE_SALE
+where sales_date like '2022-03%'
+UNION ALL
+select date_format(SALES_DATE,'%Y-%m-%d') SALES_DATE,PRODUCT_ID,NULL USER_ID,SALES_AMOUNT
+from OFFLINE_SALE
+where sales_date like '2022-03%'
+order by SALES_DATE, PRODUCT_ID, USER_ID
