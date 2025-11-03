@@ -1,25 +1,24 @@
 def solution(sequence, k):
-    answer = []
-    startIdx=len(sequence)-1
-    endIdx=len(sequence)-1
-    temp=0
 
-    while True:
-        if temp > k:
-            temp -= sequence[endIdx]
-            # print(startIdx, endIdx, temp)
-            if temp == k:
-                break
-            endIdx-=1
-        elif temp < k:
-            temp += sequence[startIdx]
-            # print(startIdx, endIdx, temp)
-            if temp == k:
-                break
-            startIdx-=1
-    while startIdx > 0 and (sequence[startIdx] == sequence[endIdx]) and (sequence[startIdx] == sequence[startIdx-1]) :
-        startIdx-=1
-        endIdx-=1
-        # print(startIdx, endIdx)
+    n = len(sequence)
+    dist = n+1
+    res = None
+    runningSum = [0]*(n+1)
+    runningSum[1] = sequence[0]
 
-    return [startIdx,endIdx]
+    for i in range(n):
+        runningSum[i+1] = runningSum[i]+sequence[i]
+    l, r = 0, 1    
+
+    while r < n+1:
+        if runningSum[r]-runningSum[l] == k:
+            if r-l < dist:
+                dist = r-l
+                res = [l, r-1]
+            l += 1
+            r += 1
+
+        elif runningSum[r]-runningSum[l] > k: l += 1
+        else: r += 1
+
+    return res
