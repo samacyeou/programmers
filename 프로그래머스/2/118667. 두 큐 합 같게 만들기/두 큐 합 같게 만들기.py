@@ -17,7 +17,7 @@ def solution(queue1, queue2):
 
     q1 = queue1.copy()
     qSum = sum1
-    l = len(queue1) * 3 - 3
+    l = len(queue1)*3
     count = 0
 
     while sum1 != sum2:
@@ -33,7 +33,7 @@ def solution(queue1, queue2):
             sum1, sum2 = sum2, sum1
 
         count += 1
-        if count == l: break
-    if sum1 != sum2: return -1
+        # if qSum == sum1 and queue1 == q1: return -1
+        if count == l: return -1
 
     return res
