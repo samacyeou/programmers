@@ -19,9 +19,14 @@ ORDER BY APNT_YMD ASC*/
 
 
 
-SELECT a.APNT_NO, p.PT_NAME, p.PT_NO, a.MCDP_CD, d.DR_NAME, a.APNT_YMD
-from APPOINTMENT a
-join DOCTOR d on a.MDDR_ID = d.DR_ID
-join PATIENT p on a.PT_NO = p.PT_NO
-where a.APNT_CNCL_YN = 'N' and a.MCDP_CD = 'CS' and DATE(a.APNT_YMD) = '2022-04-13%'
-order by APNT_YMD
+with rsvday_patchart as (select APNT_NO, PT_NAME, pat.PT_NO, MCDP_CD, MDDR_ID, APNT_YMD
+                       from appointment as appoint
+                       left join PATIENT as pat
+                       on appoint.PT_NO = pat.PT_NO
+                       where (DATE_FORMAT(APNT_YMD, "%Y-%m-%d") = "2022-04-13") and APNT_CNCL_YN = "N")
+select APNT_NO, PT_NAME, PT_NO, patchart.MCDP_CD, DR_NAME, APNT_YMD
+from rsvday_patchart as patchart
+join DOCTOR as dr
+on dr.DR_ID = patchart.MDDR_ID
+-- where dr.MCDP_CD = "CS"
+order by APNT_YMD asc
