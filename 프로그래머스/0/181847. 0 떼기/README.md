@@ -1,10 +1,10 @@
 # [level 0] 0 떼기 - 181847 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181847#qna) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181847?language=java) 
 
 ### 성능 요약
 
-메모리: 4.2 MB, 시간: 0.01 ms
+메모리: 84.9 MB, 시간: 7.00 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2026년 01월 08일 10:08:06
+2026년 01월 08일 10:08:47
 
 ### 문제 설명
 
