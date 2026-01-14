@@ -1,57 +1,52 @@
-from collections import Counter
-def route_list(start_r,start_c, end_r,end_c, route_lst):
-    while not(start_r==end_r and start_c==end_c):
-
-        if start_r<end_r:
-            start_r+=1
-            route_lst.append((start_r,start_c))
-            continue
-
-        if start_r>end_r:
-            start_r-=1
-            route_lst.append((start_r,start_c))
-            continue
-        if start_c<end_c:
-            start_c+=1
-            route_lst.append((start_r,start_c))
-            continue
-        if start_c>end_c:
-            start_c-=1
-            route_lst.append((start_r,start_c))
-            continue
-
-    return route_lst      
+from collections import defaultdict, deque
 def solution(points, routes):
-
-    answer=0
-    robot=[]
-    for route in routes:
-        route_lst=[]
-        for i in range(len(route)-1):
-            start = points[route[i]-1]
-            end = points[route[i+1]-1]
-            start_r = start[0]
-            start_c = start[1]
-            end_r = end[0]
-            end_c = end[1]
-            if i==0:
-                route_lst.append((start_r,start_c))
-            route_list(start_r,start_c, end_r,end_c,route_lst )
-
-        robot.append(route_lst)
-    max_ = max([len(r) for r in robot])    
-    for i in range(max_):
-        lst=[]
-        for r in range(len(routes)):
-            if len(robot[r])<=i:
-                continue
+    bol_d = defaultdict(int)
+    answer = 0
+    def go(sp,ep, t):
+        start_y = points[sp-1][0] - 1
+        start_x = points[sp-1][1] - 1
+        end_y   = points[ep-1][0] - 1
+        end_x   = points[ep-1][1] - 1
+        # print((start_y, start_x), (end_y, end_x))
+        # bol_d[(t, start_y, start_x)] += 1    
+        while start_y != end_y:
+            if start_y > end_y:
+                start_y -= 1
             else:
-                lst.append(robot[r][i])
+                start_y += 1
+            t += 1
+            # print(t, start_y, start_x)
+            bol_d[(t, start_y, start_x)] += 1
 
-        crash_dash = Counter(lst)
-        for k,v in crash_dash.items():
-            if v>1:
-                answer+=1
+        while start_x != end_x:
+            if start_x > end_x:
+                start_x -=1
+            else:
+                start_x += 1
+            t +=1
+            # print(t, start_y, start_x)
+            bol_d[(t, start_y, start_x)] += 1
 
+        # print((sp, ep), bol_d)
+        return t
 
+    # for j in points:
+    #     bol_d[(0, j[0]-1, j[1]-1)] += 1
+    for i in range(len(routes)):
+        rout = deque(routes[i])
+        time = 0
+        st = rout.popleft()
+        while rout:
+            ed = rout.popleft()
+            bol_d[(time, points[st-1][0]-1, points[st-1][1]-1)] += 1
+            time = go(st,ed, time)
+
+            if rout:
+                st = ed
+                bol_d[(time, points[st-1][0]-1, points[st-1][1]-1)] -= 1
+                # rout.appendleft(ed)
+    # print(bol_d)
+    for i in bol_d:
+        if bol_d[i] > 1:
+            answer += 1
     return answer
