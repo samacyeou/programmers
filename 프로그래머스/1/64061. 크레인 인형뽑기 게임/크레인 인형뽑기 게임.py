@@ -1,27 +1,48 @@
 def solution(board, moves):
     answer = 0
+    doll_list=[]
+    def what_n(num):
+        for k in range(len(board)):
+            if(board[k][num]!=0):
+                temp=board[k][num]
+                board[k][num]=0
+                return temp
+        return -1
 
-    # 인형뽑기의 번호에 맞는 값 넣어주기
-    baskets = []
-    new_board_len = len(board)
-    for move in moves:
-        i = 0
-        while i < new_board_len:
-            # if sum(board[i]) == 0 and i == 0:
-            #   del board[i]
-            #   new_board_len = len(board)
-            dol = board[i][move - 1]
-            if dol != 0:
-                baskets.append(dol)
-                board[i][move - 1] = 0
-                break
-            else:
-                i += 1
+    def check(lst, count):
+        add=0
+        if count==0:
+            return 0
+        if lst[count]==lst[count-1]:
+            add=2
+            count-=2
+            lst.pop()
+            lst.pop()
+            return add
+        else:
+            return 0
 
-        # 스퀀스 타입으로 최근 들어간 index와 그전 index 비교해서 같을 경우 제거
-        if len(baskets) > 1:
-            if baskets[-1] == baskets[-2]:
-                baskets = baskets[:-2]
-                answer += 2
+
+
+
+
+    count=-1
+    for i in moves:
+        #인형 가지고 오기
+        doll=what_n(i-1)
+
+        if(doll!=-1):            
+            #인형 리스트에 넣기
+            doll_list.append(doll)
+            count+=1
+
+            #인형 확인하기
+            add=check(doll_list,count)           
+            answer+=add
+            count = len(doll_list) - 1
+        else: 
+            pass
+
+
 
     return answer
