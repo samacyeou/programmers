@@ -1,12 +1,6 @@
-# -- 코드를 입력하세요
-# SELECT BOOK_ID, DATE_FORMAT(PUBLISHED_DATE,'%Y-%m-%d') AS PUBLISHED_DATE
-# FROM BOOK
-# WHERE PUBLISHED_DATE LIKE '2021%' AND CATEGORY LIKE '%인문%'
-# ORDER BY PUBLISHED_DATE ASC
-
-
-SELECT book_id, DATE_FORMAT(PUBLISHED_DATE,'%Y-%m-%d') AS PUBLISHED_DATE
-from book
-where extract(year from published_date) = '2021'
-and category = '인문'
-order by published_date asc;
+SELECT BOOK_ID, to_char(PUBLISHED_DATE, 'yyyy-mm-dd')
+FROM BOOK
+WHERE CATEGORY = '인문' 
+    AND PUBLISHED_DATE BETWEEN TO_DATE('2021-01','YYYY-MM')
+    AND TO_DATE('2021-12','YYYY-MM')
+ORDER BY PUBLISHED_DATE ASC
