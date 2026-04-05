@@ -1,25 +1,18 @@
 class Solution {
-
     public String solution(String s, String skip, int index) {
-        StringBuilder sb = new StringBuilder();
-
-        int abcLen = 'z' - 'a' + 1;
-        boolean[] isSkip = new boolean[abcLen];
-
-        for (char c : skip.toCharArray()) {
-            isSkip[c - 'a'] = true;
-        }
-
-        for (char c : s.toCharArray()) {
-            int i = c - 'a', cnt = 0;
-            while (cnt != index) {
-                i = (i + 1) % abcLen;
-                if (!isSkip[i]) cnt++;
+        String answer = "";
+        char[] c = s.toCharArray();
+        
+        for(int i = 0;i<c.length;i++){
+            for(int j = 0;j<index;j++){
+                c[i]++;
+                if(c[i]>'z') c[i] = 'a';
+                if(skip.contains(Character.toString(c[i]))) j--;
             }
-            sb.append((char) ('a' + i));
         }
-
-        return sb.toString();
+        
+        answer = new String(c);
+        
+        return answer;
     }
-
 }
