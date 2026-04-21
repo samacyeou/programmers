@@ -1,10 +1,10 @@
 # [level 1] 조건에 맞는 도서 리스트 출력하기 - 144853 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/144853?language=oracle) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/144853#qna) 
 
 ### 성능 요약
 
-메모리: 0.0 MB, 시간: 0.00 ms
+메모리: undefined, 시간: 
 
 ### 구분
 
@@ -12,11 +12,11 @@
 
 ### 채점결과
 
-Empty
+합계: 100.0 / 100.0
 
 ### 제출 일자
 
-2026년 03월 27일 11:50:56
+2026년 04월 21일 15:27:14
 
 ### 문제 설명
 
