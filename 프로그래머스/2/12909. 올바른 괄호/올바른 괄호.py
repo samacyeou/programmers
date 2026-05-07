@@ -12,7 +12,6 @@ def solution(s):
                 cnt+=1
             elif s[i]==')':
                 cnt-=1
-    
     if cnt!=0:
         answer=False
     return answer
