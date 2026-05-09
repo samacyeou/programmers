@@ -78,12 +78,10 @@ string solution(string m, vector<string> musicinfos) {
         idx=0;
         in=0;
         while(seq<=compare.et-compare.st&&cnt<m.size()) {
-            
            // cout<<compare.rhyme<<", cnt:"<<cnt<<", in:"<<in<<", seq:"<<seq<<", idx:"<<idx<<", compare:"<<compare.rhyme[idx%len]<<", m:"<<m[cnt]<<endl;
             if(!in) {
                 if(compare.rhyme[idx%len]==m[cnt]) {
                     in=1;
-                    ++sharf;
                     ++cnt;
                 }
             }
@@ -91,7 +89,7 @@ string solution(string m, vector<string> musicinfos) {
                 if(compare.rhyme[idx%len]!=m[cnt]) {
                     in=0;
                     idx-=cnt;
-                    seq-=(cnt-sharf+1);
+                    seq-=(cnt-sharf);
                     cnt=0;
                     sharf=0;
                 }
