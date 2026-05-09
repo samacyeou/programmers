@@ -81,7 +81,6 @@ class Solution {
             idx++;
         }
 
-
         return false;
     }
 }
