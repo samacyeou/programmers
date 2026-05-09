@@ -1,69 +1,142 @@
 #include <bits/stdc++.h>
-#include <iostream>
-#include <string>
 
 using namespace std;
 
-void convHash(string &music) {
-    map<char, char> m = {{'C', 'Q'}, {'D', 'R'}, {'F', 'S'},
-                         {'G', 'T'}, {'A', 'U'}};
-
-    for(int i = 0; i < music.length(); i++) {
-        if (music[i] == '#') { 
-            music[i - 1] = m[music[i - 1]];
-            music.erase(music.begin() + i);
-            i--;
-        }
-    }
-}
+struct music{
+    int odr;
+    int st;
+    int et;
+    string name;
+    string rhyme;
+};
 
 string solution(string m, vector<string> musicinfos) {
-    string answer = "(None)";
-    int ansTime = 0;
-    convHash(m);
+    string answer = "";
+    string temp="";
+    string time="";
+    istringstream ms;
+    istringstream ts;
+    int rnd=0;
+    int idx=0;
+    int seq=1;
+    int cnt=0;
+    int h=0;
+    int minute=0;
+    int len=0;
+    int sharf=0;
+    bool in=0;
+    vector<music> store;
+    music compare;
 
-    for (int i = 0; i < musicinfos.size(); i++) {
-        string t1;
-        string t2;
-        string name;
-        string music;
-        string info = musicinfos[i];
-
-        // replace(info.begin(),info.end(), ',', ' ');
-        
-        // string temp = " ";
-        // while(info.find(',') != string::npos) {
-        //     info.replace(info.find(','), 1, temp);
-        // }
-
-        // stringstream ss(info);
-        // ss >> t1 >> t2 >> name >> mus;
-        
-        t1 = info.substr(0, 5);
-        t2 = info.substr(6, 5);
-        int idx = info.find(',', 12);
-        name = info.substr(12, idx-12);
-        music = info.substr(idx+1);
-
-        int start = stoi(t1.substr(0, 2)) * 60 + stoi(t1.substr(3));
-        int end = stoi(t2.substr(0, 2)) * 60 + stoi(t2.substr(3));
-        int sub = end - start; 
-
-        convHash(music);
-        string played = "";
-        int len = music.length();
-
-        for (int j = 0; j < sub; j++) played += music[j % len];
-
-        int t = played.find(m);
-        if(t != string::npos) {
-            if (ansTime < sub) {
-                ansTime = sub;
-                answer = name;
+    for(string song:musicinfos) {
+        idx=0;
+        compare.odr=rnd;
+        ms.str(song);
+        while(getline(ms,temp,',')) {
+            if(idx==0) {
+                seq=0;
+                ts.str(temp);
+                while(getline(ts,time,':')) {
+                    if(seq==0) {
+                        h=stoi(time);
+                    }
+                    else {
+                        minute=stoi(time);
+                    }
+                    ++seq;
+                }
+                compare.st=h*60+minute;
+                ts.clear();
             }
+            else if(idx==1) {
+                seq=0;
+                ts.str(temp);
+                while(getline(ts,time,':')) {
+                    if(seq==0) {
+                        h=stoi(time);
+                    }
+                    else {
+                        minute=stoi(time);
+                    }
+                    ++seq;
+                }
+                compare.et=h*60+minute;
+                ts.clear();
+            }
+            else if(idx==2) {
+                compare.name=temp;
+            }
+            else {
+                compare.rhyme=temp;
+            }
+            ++idx;
         }
 
+        len=compare.rhyme.size();
+        cnt=0;
+        seq=0;
+        idx=0;
+        in=0;
+        while(seq<=compare.et-compare.st&&cnt<m.size()) {
+            
+           // cout<<compare.rhyme<<", cnt:"<<cnt<<", in:"<<in<<", seq:"<<seq<<", idx:"<<idx<<", compare:"<<compare.rhyme[idx%len]<<", m:"<<m[cnt]<<endl;
+            if(!in) {
+                if(compare.rhyme[idx%len]==m[cnt]) {
+                    in=1;
+                    ++sharf;
+                    ++cnt;
+                }
+            }
+            else {
+                if(compare.rhyme[idx%len]!=m[cnt]) {
+                    in=0;
+                    idx-=cnt;
+                    seq-=(cnt-sharf+1);
+                    cnt=0;
+                    sharf=0;
+                }
+                else {
+                    if(compare.rhyme[idx%len]=='#') {
+                        ++sharf;
+                    }
+                    ++cnt;
+                }
+            }
+
+            if(cnt>=m.size()&&compare.rhyme[(idx+1)%len]=='#') {
+                in=0;
+                idx-=(cnt-1);
+                seq-=((cnt-1)-sharf+1);
+                cnt=0;
+                sharf=0;
+            }
+
+            ++idx;
+            if(compare.rhyme[idx%len]!='#') {
+                ++seq;
+            }
+        }
+        
+        if(in&&cnt>=m.size()&&compare.rhyme[idx%len]!='#') {
+            store.push_back(compare);
+        }
+
+        ++rnd;
+        ms.clear();
     }
+
+    if(store.size()==0) {
+        return "(None)";
+    }
+
+    sort(store.begin(),store.end(),[](music a, music b) {
+        if(a.et-a.st==b.et-b.st) {
+            return a.odr<b.odr;
+        }
+        return a.et-a.st>b.et-b.st;
+    });
+    
+    answer=store[0].name;
 
     return answer;
 }
