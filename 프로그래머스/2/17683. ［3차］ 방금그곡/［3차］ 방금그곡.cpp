@@ -77,7 +77,7 @@ string solution(string m, vector<string> musicinfos) {
         seq=0;
         idx=0;
         in=0;
-        while(seq<=compare.et-compare.st&&cnt<m.size()) {
+        while(seq<compare.et-compare.st&&cnt<m.size()) {
            // cout<<compare.rhyme<<", cnt:"<<cnt<<", in:"<<in<<", seq:"<<seq<<", idx:"<<idx<<", compare:"<<compare.rhyme[idx%len]<<", m:"<<m[cnt]<<endl;
             if(!in) {
                 if(compare.rhyme[idx%len]==m[cnt]) {
