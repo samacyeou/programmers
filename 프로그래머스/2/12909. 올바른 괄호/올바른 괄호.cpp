@@ -1,29 +1,31 @@
-#include <string>
-#include <iostream>
-#include <stack>
-
+#include <bits/stdc++.h>
 using namespace std;
+
 
 bool solution(string s)
 {
     bool answer = true;
-    stack<char> stk;
-    for(int i=0; i<s.size(); i++){
-        if(s[i] == '('){
-            stk.push(s[i]);
+    
+    int count = 0;
+    for (auto& item : s)
+    {
+        if (item == '(')
+        {
+            count++;
         }
-
-        else{
-            if(!stk.empty() && stk.top() == '('){ 
-                stk.pop();
-            }
-            else{
-                stk.push(s[i]);
-            }
+        else if (item == ')')
+        {
+            count--;
+        }
+        
+        if (count < 0)
+        {
+            answer = false;
+            break;
         }
     }
-
-    if(!stk.empty()) answer = false;
+    
+    if (count != 0) answer = false;
 
     return answer;
 }
