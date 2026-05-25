@@ -24,27 +24,19 @@
 
     
     
-    
-WITH JOIN_COUNT AS(
-    SELECT
-        r.MEMBER_ID,
-        m.MEMBER_NAME,
-        r.REVIEW_TEXT,
-        r.REVIEW_DATE,
-        COUNT(r.MEMBER_ID) OVER (PARTITION BY r.MEMBER_ID) AS REVIEW_COUNT
-    FROM REST_REVIEW r
-        JOIN MEMBER_PROFILE m
-            ON r.MEMBER_ID = m.MEMBER_ID
-    order by review_count desc
-)
-
-SELECT
-    MEMBER_NAME,
-    REVIEW_TEXT,
-    DATE_FORMAT(REVIEW_DATE, '%Y-%m-%d') AS REVIEW_DATE
-FROM JOIN_COUNT
-WHERE REVIEW_COUNT = (
-    SELECT MAX(REVIEW_COUNT)
-    FROM JOIN_COUNT
-)
-ORDER BY REVIEW_DATE ASC, REVIEW_TEXT ASC;
+ WITH CTE
+         AS (SELECT B.MEMBER_ID,
+                    A.MEMBER_NAME,
+                     ROW_NUMBER() OVER (ORDER BY CNT DESC) AS RN
+              FROM MEMBER_PROFILE A
+                       JOIN (SELECT  MEMBER_ID,
+                                     REVIEW_DATE,
+                                     REVIEW_TEXT,
+                                     COUNT(*) OVER (PARTITION BY MEMBER_ID) AS CNT 
+                             FROM REST_REVIEW) B
+                            ON A.MEMBER_ID = B.MEMBER_ID)
+ SELECT MEMBER_NAME, REVIEW_TEXT, REVIEW_DATE
+ FROM REST_REVIEW R
+          JOIN CTE C ON C.MEMBER_ID = R.MEMBER_ID
+ WHERE RN = 1
+ ORDER BY REVIEW_DATE, REVIEW_TEXT
