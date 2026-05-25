@@ -12,7 +12,7 @@
 # SELECT 
 #     MEMBER_NAME,
 #     REVIEW_TEXT,
-#     DATE_FORMAT(REVIEW_DATE, '%Y-%m-%d')
+#     DATE_FORMAT(REVIEW_DATE, '%Y-%m-%d') as review_date
 # FROM 
 #     REST_REVIEW
 #         JOIN 
@@ -22,21 +22,25 @@
 # ORDER BY 
 #     REVIEW_DATE, REVIEW_TEXT;
 
-    
-    
- WITH CTE
-         AS (SELECT B.MEMBER_ID,
-                    A.MEMBER_NAME,
-                     ROW_NUMBER() OVER (ORDER BY CNT DESC) AS RN
-              FROM MEMBER_PROFILE A
-                       JOIN (SELECT  MEMBER_ID,
-                                     REVIEW_DATE,
-                                     REVIEW_TEXT,
-                                     COUNT(*) OVER (PARTITION BY MEMBER_ID) AS CNT 
-                             FROM REST_REVIEW) B
-                            ON A.MEMBER_ID = B.MEMBER_ID)
- SELECT MEMBER_NAME, REVIEW_TEXT, REVIEW_DATE
- FROM REST_REVIEW R
-          JOIN CTE C ON C.MEMBER_ID = R.MEMBER_ID
- WHERE RN = 1
- ORDER BY REVIEW_DATE, REVIEW_TEXT
+
+
+WITH CTS AS (
+    SELECT P.MEMBER_ID,MEMBER_NAME,CNT -- ,MAX(CNT) AS MX_CNT
+    FROM MEMBER_PROFILE P
+    JOIN (SELECT MEMBER_ID, COUNT(*) AS CNT
+          FROM REST_REVIEW
+          GROUP BY MEMBER_ID) A
+    ON P.MEMBER_ID = A.MEMBER_ID)
+
+SELECT C.MEMBER_NAME, 
+       R.REVIEW_TEXT,
+       DATE_FORMAT(R.REVIEW_DATE,'%Y-%m-%d') AS REVIEW_DATE
+FROM CTS C
+JOIN REST_REVIEW R
+ON R.MEMBER_ID=C.MEMBER_ID
+WHERE C.CNT = (SELECT MAX(CNT)
+                FROM MEMBER_PROFILE P
+                JOIN (SELECT MEMBER_ID, COUNT(*) AS CNT
+                      FROM REST_REVIEW
+                      GROUP BY MEMBER_ID) K)
+ORDER BY 3,2
