@@ -1,18 +1,19 @@
-#include <stack>
-#include<string>
+#include <bits/stdc++.h>
 using namespace std;
 
-int solution(string s)
+int solution(string str)
 {
-    int answer = -1;
-    stack<char> st;
-    st.push(s[0]);
-    for(int i = 1; i < s.size(); i++) {
-        // if(st.top() == s[i]) {
-        if(!st.empty() && st.top() == s[i]){
-            st.pop();
-        }
-        else st.push(s[i]);
+    size_t str_len = str.length();
+    if(str_len & 1) return false; // (==s_len % 2 == s_len is odd)
+    auto *st = &str[0];
+    auto *ed = &str[0] + str_len;
+
+    size_t top = 0;
+
+    for(auto p = st; p<ed; p++){
+        if(top && *p == str[top-1]) --top;
+        else str[top++] = *p;
     }
-    return st.empty() ? 1 : 0;
+
+    return !top;
 }
