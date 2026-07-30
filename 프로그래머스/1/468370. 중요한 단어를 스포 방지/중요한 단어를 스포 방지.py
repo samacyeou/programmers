@@ -48,7 +48,7 @@ def solution(message, spoiler_ranges):
             end = len(message)
         else:
             assert spoiler_ranges[i][0] >= 0
-            assert spoiler_ranges[i][1] <= len(message)
+            assert spoiler_ranges[i][1] < len(message)
             assert spoiler_ranges[i][0] <= spoiler_ranges[i][1]
             start = find_word_str_idx(spoiler_ranges[i][0], message)
             end = find_word_end_idx(spoiler_ranges[i][1], message)

@@ -1,6 +1,6 @@
 # [level 1] 중요한 단어를 스포 방지 - 468370 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/468370?language=python3) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/468370#qna) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2026년 07월 31일 07:14:37
+2026년 07월 31일 07:17:21
 
 ### 문제 설명
 
