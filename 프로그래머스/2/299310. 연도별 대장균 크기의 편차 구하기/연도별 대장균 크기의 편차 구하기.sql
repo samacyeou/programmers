@@ -11,14 +11,17 @@
 
 
 
-SELECT YEAR(A.DIFFERENTIATION_DATE) AS YEAR, B.ASD - A.SIZE_OF_COLONY AS YEAR_DEV, A.ID
-FROM ECOLI_DATA AS A
-    JOIN (
-        SELECT
-            MAX(SIZE_OF_COLONY) AS ASD,
-            YEAR(DIFFERENTIATION_DATE) as DIFFERENTIATION_DATE
-        FROM ECOLI_DATA
-        GROUP BY YEAR(DIFFERENTIATION_DATE)
-    ) AS B
-        ON YEAR(A.DIFFERENTIATION_DATE) = B.DIFFERENTIATION_DATE
-ORDER BY YEAR, YEAR_DEV
+select
+    convert(left(a.DIFFERENTIATION_DATE, 4), unsigned INTEGER) as YEAR,
+    (b.MAXCOLONY - a.SIZE_OF_COLONY) as YEAR_DEV,
+    a.ID
+from ECOLI_DATA a
+    left join (
+        select
+            left(c.DIFFERENTIATION_DATE, 4) as YEAR,
+            max(c.SIZE_OF_COLONY) as MAXCOLONY
+        from ECOLI_DATA c
+        group by left(c.DIFFERENTIATION_DATE, 4)
+    ) b
+        on b.YEAR = left(a.DIFFERENTIATION_DATE, 4)
+order by YEAR asc, YEAR_DEV asc;
