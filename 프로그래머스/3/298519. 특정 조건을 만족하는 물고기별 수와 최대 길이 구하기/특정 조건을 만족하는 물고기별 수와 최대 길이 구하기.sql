@@ -13,6 +13,6 @@ from fish_info as f
 where f.fish_type in ( select fish_type
 from fish_info
 group by fish_type
-having avg(IFNULL(LENGTH, 10))>=33)
+having avg(case when length>10 then length else 10 end)>=33)
 group by f.fish_type
 order by f.fish_type
