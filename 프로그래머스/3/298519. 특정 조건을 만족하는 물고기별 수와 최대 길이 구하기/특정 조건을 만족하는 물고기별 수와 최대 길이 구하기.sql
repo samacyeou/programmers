@@ -7,12 +7,44 @@
 # ORDER BY FISH_TYPE
 
 
-select count(*) as fish_count,
-max(f.length) as max_length, f.fish_type
-from fish_info as f
-where f.fish_type in ( select fish_type
-from fish_info
-group by fish_type
-having avg(case when length>10 then length else 10 end)>=33)
-group by f.fish_type
-order by f.fish_type
+
+with a as (
+   select id
+    from fish_info
+    group by id
+), test as (
+    select count(*) as c
+    from a
+), t1 as (
+    select count(*) as c
+    from fish_info
+), t2 as (
+    select c
+    from test
+    union
+    select c
+    from t1
+), t3 as (
+    select count(*) as cou
+    from t2
+)
+
+# SELECT
+#     if(t3.cou=1, COUNT(*), -1) AS FISH_COUNT,
+#     MAX(revise) AS MAXLENGTH,
+#     a.FISH_TYPE AS FISH_TYPE
+# FROM FISH_INFO AS a
+#     INNER JOIN (
+#         SELECT ID, IFNULL(LENGTH, 10) AS revise
+#         FROM fish_info) AS b
+# ON a.ID = b.ID, t3
+# GROUP BY a.FISH_TYPE
+# HAVING AVG(revise) >= 33
+# ORDER BY a.FISH_TYPE;
+
+
+SELECT COUNT(*) AS FISH_COUNT, MAX(IFNULL(LENGTH, 10)) AS MAXLENGTH, FISH_TYPE
+FROM FISH_INFO
+GROUP BY FISH_TYPE
+HAVING AVG(IFNULL(LENGTH, 10)) >= 33
+ORDER BY FISH_TYPE;
